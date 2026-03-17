@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Owlgebra AI — Training End-to-End AI Workflows, RL-based LLM Training, and GEPA." />
+  <meta property="og:title" content="Owlgebra AI" />
+  <meta property="og:description" content="Training End-to-End AI Workflows and Models. RL-based LLM training and GEPA." />
+  <meta property="og:type" content="website" />
+  <title>Owlgebra AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo" aria-label="Owlgebra AI home">
+        <img src="assets/logo.png" alt="Owlgebra AI" class="nav__logo-img" />
+        <span class="nav__logo-text">Owlgebra <span class="nav__logo-accent">AI</span></span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#gepa">GEPA</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="#contact" class="nav__cta">Get Started</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__animation-wrap">
+      <canvas id="heroCanvas" class="hero__canvas" aria-label="Pixel animation: owl transforms a robotic frog into a robotic prince"></canvas>
+    </div>
+    <div class="hero__content reveal">
+      <h1 class="hero__title">
+        Training End&#8209;to&#8209;End<br />
+        <span class="hero__title-accent">AI Workflows</span>
+      </h1>
+      <p class="hero__sub">
+        The open platform for RL-based LLM training, end-to-end model pipelines,
+        and Generalized Evolutionary Policy Adaptation.
+      </p>
+      <div class="hero__actions">
+        <a href="#platform" class="btn btn--primary">Explore Platform</a>
+        <a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener" class="btn btn--ghost">View on GitHub</a>
+      </div>
+    </div>
+    <div class="hero__scroll-hint" aria-hidden="true">
+      <span>scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- TRUSTED BY / PHILOSOPHY BAR -->
+  <div class="marquee-bar" aria-hidden="true">
+    <div class="marquee-bar__inner">
+      <span>End-to-End Training</span>
+      <span class="sep">·</span>
+      <span>RL-based LLM Training</span>
+      <span class="sep">·</span>
+      <span>GEPA</span>
+      <span class="sep">·</span>
+      <span>Open Research</span>
+      <span class="sep">·</span>
+      <span>Policy Adaptation</span>
+      <span class="sep">·</span>
+      <span>Evolutionary Algorithms</span>
+      <span class="sep">·</span>
+      <span>LLM Fine-tuning</span>
+      <span class="sep">·</span>
+      <span>Reward Modeling</span>
+      <span class="sep">·</span>
+      <!-- duplicate for seamless loop -->
+      <span>End-to-End Training</span>
+      <span class="sep">·</span>
+      <span>RL-based LLM Training</span>
+      <span class="sep">·</span>
+      <span>GEPA</span>
+      <span class="sep">·</span>
+      <span>Open Research</span>
+      <span class="sep">·</span>
+      <span>Policy Adaptation</span>
+      <span class="sep">·</span>
+      <span>Evolutionary Algorithms</span>
+      <span class="sep">·</span>
+      <span>LLM Fine-tuning</span>
+      <span class="sep">·</span>
+      <span>Reward Modeling</span>
+      <span class="sep">·</span>
+    </div>
+  </div>
+
+  <!-- WHAT WE DO -->
+  <section class="section what" id="platform">
+    <div class="container">
+      <div class="section-label reveal">What We Do</div>
+      <div class="what__header reveal">
+        <h2 class="h2">The full stack for<br />intelligent model training.</h2>
+        <p class="what__desc">
+          Owlgebra AI provides an end-to-end infrastructure to train, fine-tune, evaluate,
+          and deploy intelligent AI models — from raw data to production-ready agents.
+        </p>
+      </div>
+
+      <div class="what__cards">
+        <div class="what__card reveal">
+          <div class="what__card-num">01</div>
+          <div class="what__card-body">
+            <h3>Train.</h3>
+            <p>End-to-end AI model training pipelines. From data ingestion and preprocessing to distributed training and evaluation — fully managed or self-hosted.</p>
+          </div>
+        </div>
+        <div class="what__card reveal">
+          <div class="what__card-num">02</div>
+          <div class="what__card-body">
+            <h3>RL Training.</h3>
+            <p>Reinforcement Learning-based LLM fine-tuning at scale. Align models to complex objectives using RLHF, RLAIF, and custom reward modeling pipelines.</p>
+          </div>
+        </div>
+        <div class="what__card reveal">
+          <div class="what__card-num">03</div>
+          <div class="what__card-body">
+            <h3>GEPA.</h3>
+            <p>Generalized Evolutionary Policy Adaptation. Evolve agent policies across environments using population-based search and gradient-free optimization.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM DEEP DIVE -->
+  <section class="section platform" id="platform-detail">
+    <div class="container">
+
+      <!-- RL Training block -->
+      <div class="platform__block reveal">
+        <div class="platform__block-header">
+          <div class="section-label">RL Training</div>
+          <h2 class="h2">Train LLMs with Reinforcement Learning at scale.</h2>
+          <p class="platform__block-desc">
+            Run end-to-end RL fine-tuning jobs on large language models with managed infrastructure,
+            custom reward functions, and integrated evaluation environments.
+          </p>
+          <a href="#contact" class="btn btn--primary">Start Training</a>
+        </div>
+        <div class="platform__features">
+          <div class="platform__feature">
+            <span class="platform__feature-letter">A</span>
+            <div>
+              <strong>Custom Reward Modeling</strong>
+              <p>Design task-specific reward signals with our modular reward function library or bring your own.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">B</span>
+            <div>
+              <strong>Distributed Policy Optimization</strong>
+              <p>Scale PPO, GRPO, and DPO across hundreds of GPUs with automatic checkpointing and recovery.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">C</span>
+            <div>
+              <strong>Rollout Sandboxes</strong>
+              <p>Spawn secure, isolated environments for agent rollouts — code execution, web browsing, tool use.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">D</span>
+            <div>
+              <strong>Live Evaluation Dashboards</strong>
+              <p>Track reward curves, KL divergence, win-rates, and benchmark scores in real time.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="platform__divider"></div>
+
+      <!-- GEPA block -->
+      <div class="platform__block reveal" id="gepa">
+        <div class="platform__block-header">
+          <div class="section-label">GEPA</div>
+          <h2 class="h2">Generalized Evolutionary Policy Adaptation.</h2>
+          <p class="platform__block-desc">
+            Evolve neural policies across heterogeneous environments using population-based
+            search, novelty metrics, and gradient-free fitness optimization.
+          </p>
+          <a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener" class="btn btn--outline">View on GitHub</a>
+        </div>
+        <div class="platform__features">
+          <div class="platform__feature">
+            <span class="platform__feature-letter">A</span>
+            <div>
+              <strong>Population-Based Search</strong>
+              <p>Maintain diverse populations of policies and apply evolutionary operators — mutation, crossover, selection.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">B</span>
+            <div>
+              <strong>Novelty-Driven Exploration</strong>
+              <p>Navigate sparse reward landscapes by rewarding behavioral novelty alongside task performance.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">C</span>
+            <div>
+              <strong>Cross-Environment Generalization</strong>
+              <p>Policies trained via GEPA transfer better across environments with shifted dynamics and objectives.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">D</span>
+            <div>
+              <strong>Gradient-Free Optimization</strong>
+              <p>Evolve black-box models and non-differentiable systems where gradient methods fail.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="platform__divider"></div>
+
+      <!-- End-to-End Pipelines block -->
+      <div class="platform__block reveal">
+        <div class="platform__block-header">
+          <div class="section-label">End-to-End Pipelines</div>
+          <h2 class="h2">From raw data to deployed model.</h2>
+          <p class="platform__block-desc">
+            Orchestrate the full model lifecycle — data curation, pre-training, supervised fine-tuning,
+            alignment, evaluation, and serving — in one unified workflow.
+          </p>
+          <a href="#contact" class="btn btn--primary">Get Started</a>
+        </div>
+        <div class="platform__features">
+          <div class="platform__feature">
+            <span class="platform__feature-letter">A</span>
+            <div>
+              <strong>Data Curation &amp; Synthesis</strong>
+              <p>Filter, deduplicate, and synthetically augment training data at scale.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">B</span>
+            <div>
+              <strong>Distributed Pre-training</strong>
+              <p>Multi-node, multi-GPU training with FSDP, tensor parallelism, and pipeline parallelism.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">C</span>
+            <div>
+              <strong>Alignment &amp; Fine-tuning</strong>
+              <p>SFT, RLHF, DPO, and LoRA adapters — mix and match to hit your target behavior.</p>
+            </div>
+          </div>
+          <div class="platform__feature">
+            <span class="platform__feature-letter">D</span>
+            <div>
+              <strong>Inference &amp; Serving</strong>
+              <p>Deploy to dedicated or serverless endpoints with vLLM and quantization support.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section class="section research" id="research">
+    <div class="container">
+      <div class="section-label reveal">Research</div>
+      <div class="research__header reveal">
+        <h2 class="h2">Open-source contributions<br />to the frontier.</h2>
+        <p>We publish our methods and release code to advance the broader AI research community.</p>
+      </div>
+
+      <div class="research__grid">
+        <article class="research__card reveal">
+          <div class="research__card-tag">NEW</div>
+          <div class="research__card-meta">Research · 2026</div>
+          <h3 class="research__card-title">GEPA: Generalized Evolutionary Policy Adaptation</h3>
+          <p class="research__card-desc">Population-based policy optimization that generalizes across environments with sparse rewards via novelty-driven search.</p>
+          <a href="https://github.com/owlgebra-ai" class="research__card-link" target="_blank" rel="noopener">Read paper →</a>
+        </article>
+        <article class="research__card reveal">
+          <div class="research__card-meta">Research · 2025</div>
+          <h3 class="research__card-title">Scalable RL Fine-tuning for Large Language Models</h3>
+          <p class="research__card-desc">A framework for stable, high-throughput RL training of LLMs using distributed rollouts and asynchronous reward collection.</p>
+          <a href="https://github.com/owlgebra-ai" class="research__card-link" target="_blank" rel="noopener">Read paper →</a>
+        </article>
+        <article class="research__card reveal">
+          <div class="research__card-meta">Open Source · 2025</div>
+          <h3 class="research__card-title">owlgebra-train: E2E Training Toolkit</h3>
+          <p class="research__card-desc">An open-source library for end-to-end model training workflows with first-class support for RL, SFT, and evolutionary methods.</p>
+          <a href="https://github.com/owlgebra-ai" class="research__card-link" target="_blank" rel="noopener">View on GitHub →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOG TEASER -->
+  <section class="section blog" id="blog">
+    <div class="container">
+      <div class="blog__header reveal">
+        <div class="section-label">Latest</div>
+        <a href="#" class="blog__see-all">See all →</a>
+      </div>
+      <div class="blog__tabs reveal">
+        <button class="blog__tab active" data-filter="all">All</button>
+        <button class="blog__tab" data-filter="announcements">Announcements</button>
+        <button class="blog__tab" data-filter="research">Research</button>
+      </div>
+      <div class="blog__grid">
+        <article class="blog__card reveal" data-category="announcements">
+          <div class="blog__card-cat">announcements</div>
+          <h3>Introducing the Owlgebra AI Platform</h3>
+          <p>We're opening access to our end-to-end AI training platform, built for teams that take model quality seriously.</p>
+          <span class="blog__card-date">March 2026</span>
+        </article>
+        <article class="blog__card reveal" data-category="research">
+          <div class="blog__card-cat">research</div>
+          <h3>GEPA: Evolving Policies Across Environments</h3>
+          <p>How generalized evolutionary algorithms can produce agent policies that outperform standard RL in low-data regimes.</p>
+          <span class="blog__card-date">February 2026</span>
+        </article>
+        <article class="blog__card reveal" data-category="research">
+          <div class="blog__card-cat">research</div>
+          <h3>RL Fine-tuning at Scale: Lessons from Training LLMs</h3>
+          <p>Key engineering insights from running large-scale RL fine-tuning jobs on language models with 7B–70B parameters.</p>
+          <span class="blog__card-date">January 2026</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section" id="contact">
+    <div class="container">
+      <div class="cta-box reveal">
+        <img src="assets/logo.png" alt="" class="cta-box__owl-img" aria-hidden="true" />
+        <h2 class="h2">Start building with Owlgebra AI.</h2>
+        <p>Join researchers and engineers training the next generation of intelligent models.</p>
+        <div class="cta-box__actions">
+          <a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Get Started on GitHub</a>
+          <a href="mailto:hello@owlgebra.ai" class="btn btn--ghost btn--lg">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="assets/logo.png" alt="Owlgebra AI" class="footer__brand-logo" />
+          <span class="footer__brand-name">Owlgebra AI</span>
+          <p class="footer__tagline">Training End-to-End AI Workflows.</p>
+        </div>
+        <div class="footer__links-group">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="#platform">Train</a></li>
+            <li><a href="#platform-detail">RL Training</a></li>
+            <li><a href="#gepa">GEPA</a></li>
+          </ul>
+        </div>
+        <div class="footer__links-group">
+          <h4>Research</h4>
+          <ul>
+            <li><a href="#research">Papers</a></li>
+            <li><a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener">Open Source</a></li>
+            <li><a href="#blog">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer__links-group">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 Owlgebra AI. All rights reserved.</span>
+        <span class="footer__legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/animation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
