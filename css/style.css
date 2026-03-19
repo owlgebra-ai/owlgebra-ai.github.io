@@ -346,7 +346,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 .what__cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -357,8 +357,11 @@ button { cursor: pointer; font-family: inherit; }
   position: relative;
   transition: background var(--transition);
 }
-.what__card:not(:last-child) {
+.what__card:nth-child(odd) {
   border-right: 1px solid var(--border);
+}
+.what__card:nth-child(-n+2) {
+  border-bottom: 1px solid var(--border);
 }
 .what__card:hover { background: var(--gray-50); }
 .what__card-num {
@@ -728,12 +731,8 @@ button { cursor: pointer; font-family: inherit; }
   .research__header p { grid-column: 1; }
 
   .what__cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     border-radius: var(--radius);
-  }
-  .what__card:not(:last-child) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
   }
 
   .platform__block {
@@ -788,6 +787,15 @@ button { cursor: pointer; font-family: inherit; }
 
   .what__cards {
     grid-template-columns: 1fr;
+  }
+  .what__card:nth-child(odd) {
+    border-right: none;
+  }
+  .what__card:nth-child(-n+2) {
+    border-bottom: none;
+  }
+  .what__card:not(:last-child) {
+    border-bottom: 1px solid var(--border);
   }
 
   .research__grid,
