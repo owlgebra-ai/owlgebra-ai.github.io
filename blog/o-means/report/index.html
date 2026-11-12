@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>o-means release report · Owlgebra AI</title>
   <meta name="description" content="o-means release report, published with the o-means post on owlgebra.ai." />
-  <meta name="robots" content="noindex" />
+  
   <link rel="canonical" href="https://owlgebra.ai/blog/o-means/report/" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Owlgebra AI" />
@@ -70,13 +70,14 @@
 <ul class="list"><li>Independent audit of the candidate against PROTOCOL §7: no cross-call state, nothing outside the timer, no access to eval rows in the fit path, no branching on dataset identity.</li><li>Synthetic unseen shapes (<code>docs/design/r4-shapes.md</code>, 39 fits): peak memory at most 14.6 GB; nearest-centroid miss rate 0.004–1.06% on 10M-row shapes.</li><li>Noise floor: identical-algorithm controls scored within 0.013 of 1.0 on dev-fast.</li></ul>
 <h2 id="limitations">Limitations</h2>
 <ul class="list"><li><strong>One machine.</strong> All speedups are on one RTX 5090, where e-means runs its Triton backend. On an H100 with e-means’ CuTe kernels the systems part (about 1.4–1.5×) would likely shrink. The distance-evaluation ratios (0.06–0.30) show the algorithm does less arithmetic, but roughly 7× fewer evaluations bought about 3× in time on this card; whether that exchange rate holds on other hardware is unmeasured.</li><li><strong>The probe rule is fitted on few datasets.</strong> On real development data 0.5–2.4% of points miss their nearest centroid; on GloVe-200 (cosine-like data) it is 4–13% at p = 16, costing about 0.1% MSE. (The 0.004–1.06% figure under Checks is for synthetic 10M-row shapes only.) An adaptive variant (<code>R4P</code>) that measures misses in-fit and raises p exists as a fallback; it was not chosen because it costs 2–4% time on well-behaved data.</li><li><strong>Hub cells.</strong> On synthetic, well-separated high-dimensional mixtures a few coarse cells hold most centroids and the speedup disappears (quality is unaffected). Not seen on real datasets in any suite.</li><li><strong>Small k.</strong> The three lowest per-dataset speedups are the three k = 8,192 configs (SimpleWiki, CC-News, CelebA): with only 64 coarse cells the two-level structure saves less.</li><li><strong>Ladder placement</strong> is worth about 4% of the score, and two top ladder steps (5 → 8, 8 → 12.8) exceed the 1.6× interpolation limit on some shapes; that affects only the unscored @5 column and gap5.</li><li><strong>Approximate assignment.</strong> The returned centroids come from approximate nearest-centroid assignment during training. Quality is scored with exact assignment and is not worse than e-means’ at e-means’ 5-epoch time on any of the 17 real configs (dev-full and test), but there is no worst-case guarantee.</li><li><strong>Scope.</strong> GPU track only; no CPU implementation. 3–5 seeds per config instead of the paper’s 10; per-seed starts follow the paper’s recipe but not its exact permutations. No 100M or 1B configs. Targets are e-means at 1–3 epochs rather than the paper’s Lloyd@25 anchor (PROTOCOL §8).</li></ul>
-<h2 id="reproduce">Reproduce</h2>
-<p>On the GPU box, from the project directory, at commit <code>9c2a281</code> or later:</p>
+<h2 id="using-and-reproducing">Using and reproducing</h2>
+<p>The public implementation is the <code>contrib/o_means</code> package in the owlgebra-ai fork of faiss (<code>from faiss.contrib.o_means import Omeans</code>; <code>Omeans(d, k, nepochs=...)</code> takes the same arguments as <code>Emeans</code>). It reproduces the release measured here bitwise, at the same speed, and comes with <code>benchs/o_means/bench_o_means.py</code>, which runs o-means and e-means on one dataset.</p>
+<p>The numbers in this report were produced in the project’s working repository with its evaluation harness, from the project directory on the GPU machine:</p>
 <pre><code>python -m evals.run_suite --suite dev-full --variant my-check --candidate omeans.v2
 </code></pre>
 <pre><code>python -m evals.aggregate --suite dev-full --variant my-check --json /tmp/agg.json
 </code></pre>
-<p>The test suite additionally needs <code>--release</code>; every test run is recorded in the ledger. Use as a library: <code>from omeans.v2 import fit; centroids, info = fit(x, k, init, effort, seed)</code> with <code>x</code> and <code>init</code> as float32 CUDA tensors.</p>
+<p>The test suite additionally needs <code>--release</code>; every test run is recorded in the ledger. There the release is <code>omeans.v2</code> (<code>centroids, info = fit(x, k, init, effort, seed)</code> with <code>x</code> and <code>init</code> as float32 CUDA tensors).</p>
   </main>
 
   <footer class="footer">
