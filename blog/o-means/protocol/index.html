@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>o-means locked evaluation protocol (v1) · Owlgebra AI</title>
+  <meta name="description" content="o-means locked evaluation protocol (v1), published with the o-means post on owlgebra.ai." />
+  <meta name="robots" content="noindex" />
+  <link rel="canonical" href="https://owlgebra.ai/blog/o-means/protocol/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Owlgebra AI" />
+  <meta property="og:title" content="o-means locked evaluation protocol (v1)" />
+  <meta property="og:description" content="o-means locked evaluation protocol (v1), published with the o-means post on owlgebra.ai." />
+  <meta property="og:url" content="https://owlgebra.ai/blog/o-means/protocol/" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../../css/style.css" />
+  <link rel="stylesheet" href="../post.css" />
+</head>
+<body class="post-page">
+
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="../../../" class="nav__logo" aria-label="Owlgebra AI home">
+        <img src="../../../assets/logo.png" alt="Owlgebra AI" class="nav__logo-img" />
+        <span class="nav__logo-text">Owlgebra <span class="nav__logo-accent">AI</span></span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="../../../#platform">Platform</a></li>
+        <li><a href="../../../#self-improving">Self-Improving</a></li>
+        <li><a href="../../../#research">Research</a></li>
+        <li><a href="../../../#blog">Blog</a></li>
+        <li><a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="../../../#contact" class="nav__cta">Get Started</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <main class="post doc">
+    <header class="post__header">
+      <div class="section-label"><a href="../">o-means post</a> · Evaluation protocol</div>
+      <h1 class="post__title">o-means locked evaluation protocol (v1)</h1>
+      <p class="doc-note">File paths in this document refer to the project’s working repository.</p>
+    </header>
+<p>Goal: decide, reproducibly, whether a candidate ("o-means") is better than the reference e-means (faiss <code>contrib/e_means</code>, snapshot in <code>third_party/e_means_ref</code>, commit 7767c63) on the quality-vs-wall-clock frontier. Mirrors the paper (arXiv 2611.09501) protocol (<code>benchs/e_means/paper_xb.py</code>, <code>paper_data.py</code>) wherever it is published; deviations are listed in §8.</p>
+<p><strong>This file, <code>evals/</code> and <code>refs/</code> are the harness. Once <code>evals/LOCK.json</code> is written they are frozen: candidates may not change them. Any harness change needs a new protocol version, a re-baseline, and the supervisor’s sign-off recorded in the ledger.</strong></p>
+<h2 id="1-task">1. Task</h2>
+<p>Euclidean k-means for large k. Input: <code>x</code> float32 <code>[n, d]</code> resident on the GPU, <code>k</code>, shared starting centroids <code>init</code> (float32 <code>[k, d]</code>, first k rows of the paper’s seeded permutation), an <code>effort</code> knob and a <code>seed</code>. Output: exactly <code>k</code> float32 centroids.</p>
+<h2 id="2-hardware-and-tracks">2. Hardware and tracks</h2>
+<ul class="list"><li><strong>GPU track (headline):</strong> one RTX 5090 (32 GB), 32 CPU threads available. e-means runs as in the paper bench: <code>QuantizedEmeans(d, k, nepochs=T, batch_law=&lt;by n&gt;, quantizer=CastQuantizer(d, bfloat16))</code> on the best backend the 5090 supports. <code>batch_law</code> = "throughput" if n ≤ 2M else "quality".</li><li><strong>CPU track (secondary, reported separately, not in the headline):</strong> 32 threads, <code>NumpyEmeans</code>. Only run for release candidates that ship a CPU implementation.</li></ul>
+<h2 id="3-suites">3. Suites</h2>
+<p>k = 16,384 for n ≤ 2M; 65,536 for 2M &lt; n ≤ 20M (the paper’s rule), except VIBE sets which use the paper’s 16·sqrt(N) rounded as in its Table 11.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th scope="col">Suite</th><th scope="col">Configs</th><th scope="col">Seeds</th><th scope="col">Used for</th></tr></thead><tbody><tr><td><code>smoke</code></td><td>DEEP 100k (k=4096)</td><td>10</td><td>plumbing only, never reported</td></tr><tr><td><code>dev-fast</code></td><td>DEEP 1M (d=96), SIFT 1M ÷512 (128), GloVe-200, arXiv-Nomic-768, Landmark-Nomic-768</td><td>10,11,12</td><td>every hill-climb round</td></tr><tr><td><code>dev-full</code></td><td>dev-fast configs + DEEP 10M, SIFT 10M, CC-News-768, CelebA-2048</td><td>10–14 at ≤ 2M; 10,11,12 at 10M</td><td>promotion gate for a round that wins dev-fast</td></tr><tr><td><code>test</code></td><td>SPACEV 1M, SPACEV 10M, ImageNet-CLIP 1M (512), VIBE held-out: GooAQ-768, CodeSearchNet-768, AG-News-1024, Landmark-DINO-768, SimpleWiki-3072</td><td>10–14 at ≤ 2M; 10,11,12 at 10M</td><td><strong>locked</strong>; run only on release candidates</td></tr></tbody></table></div>
+<p>Dev deliberately spans d = 96…2048 because test is mostly d ≥ 512 (CelebA-2048 was moved from test to dev-full, and two more 768-d sets added to dev, before the lock).</p>
+<p>Datasets whose host is unreachable are dropped from a suite <em>before</em> the lock, never after. Dev datasets are scored on the paper’s <strong>validation half</strong> of the frozen eval rows; test datasets on the <strong>test half</strong>. Tuning, law fitting and failure analysis may only use dev suites. Nobody opens per-run test outputs except through the aggregate.</p>
+<h2 id="4-measurement">4. Measurement</h2>
+<p>One process per (algorithm pair, config, seed). Data is loaded and moved to the GPU before any timing. In that process, for the same <code>init</code>:</p>
+<ul class="list"><li><strong>Paired reference:</strong> e-means at T ∈ {1, 2, 3, 5} epochs.</li><li><strong>Candidate:</strong> its declared <code>EFFORT_LADDER</code> (≤ 10 values, increasing cost). Total candidate time over the ladder must be ≤ 6 × the reference T=5 time, else the harness truncates the ladder.</li></ul>
+<p>Timing of one fit follows the paper: untimed identical warm-up call, free GPU memory, <code>torch.cuda.synchronize()</code> before and after one call; if it took &lt; 2 s, time two more and take the median. The timed call includes everything the algorithm does (casting, model construction, all passes, finalization). Excluded: data loading, drawing <code>init</code>, scoring. Reference and candidate fits are interleaved in the process so drift hits both. A run is void (re-run) if another process is using the GPU, or 1-min load average &gt; 8 at start. Timed runs are serialized machine-wide by <code>flock runs/_timing.lock</code>.</p>
+<p>Scoring (paper’s <code>test_error</code>): rank centroids with <code>‖c‖² − 2x·c</code> in IEEE float32 (TF32 off), recompute the winning distance in float64, average over eval rows → <strong>MSE</strong>. Also recorded per fit: train MSE by fresh exact assignment on a fixed 200k-row training subset, dead clusters (&lt; 10 points), imbalance <code>k·Σn_j²/n²</code>, peak GPU memory, non-finite check.</p>
+<h2 id="5-metrics">5. Metrics</h2>
+<p>(Amended 2026-11-12 before the lock: seed pooling, headline on T ∈ {1, 2, 3}.)</p>
+<ul class="list"><li><strong>Pooling (per config, before any crossing):</strong> reference <code>t̄_e(T)</code>, <code>m̄_e(T)</code> = mean over the suite’s seeds of the paired e-means time and MSE. Candidate: for each effort in its (per-seed truncated) ladder that every seed kept, mean time and mean MSE over seeds → one pooled ladder curve per config. Init MSE is pooled the same way.</li><li><strong>Envelope:</strong> pooled ladder points sorted by time; <code>E(t)</code> is the best MSE among points with time ≤ t. Between two adjacent envelope points whose times differ by ≤ 1.6×, <code>E</code> is linear in (log t, MSE); across wider gaps it is a step (no credit before the later point). A target counts as reached when <code>E ≤ target·(1 + 1e-9)</code> (numerical tie: identical e-means fits differ by up to 1.2e-12 relative in MSE from GPU float non-associativity).</li><li><strong>speedup@T</strong> = <code>t̄_e(T) / t_c*</code>, <code>t_c*</code> = earliest time at which <code>E ≤ m̄_e(T)</code> (never earlier than the cheapest ladder point). Never reached: <code>min(0.5, 0.5·t̄_e(T)/t_c(max effort))</code>.</li><li><strong>gap@T</strong> (equal-time quality) = <code>(E(t̄_e(T)) − m̄_e(T)) / m̄_e(T)</code>; before the cheapest ladder point <code>E</code> = pooled MSE of <code>init</code>.</li><li><strong>HEADLINE <code>score</code></strong> = geometric mean over (config, T ∈ {1, 2, 3}) of pooled speedup@T. e-means ≡ 1.0.</li><li><strong>Guardrails:</strong> <code>min_cell_speedup</code> (worst headline cell); <code>gap5</code> per config, <code>mean_gap5</code>, <code>max_gap5</code>; <code>mean_gap</code> = mean pooled gap over (config, T ∈ {2, 3, 5}) (T=1 excluded: a ladder whose first point is a hair slower than <code>t_e(1)</code> would fall back to the init MSE); <code>train_gap</code> = pooled gap@5 on train MSE; dead-cluster count; peak memory ≤ 30 GB; non-finite outputs.</li><li><strong>Secondary, unscored:</strong> pooled speedup@5; strict (non-interpolated) pooled speedup and <code>strict_score</code>; per-seed speedups against each seed’s own paired reference with a wins count (k of S seeds &gt; 1) for T ∈ {1, 2, 3}; <code>dist_evals</code> at the crossing vs e-means’ <code>n·k·T</code>.</li></ul>
+<h2 id="6-decision-rules-pre-registered">6. Decision rules (pre-registered)</h2>
+<ul class="list"><li>Noise floor, measured before the lock on <code>dev-fast</code> and recorded in <code>evals/LOCK.json</code>: (i) the <em>identical</em> control, e-means as its own candidate (ladder T ∈ {1, 2, 3, 5}), twice; (ii) the <em>independent</em> control, e-means with a different internal seed on the ladder [0.8, 1, 1.25, 1.6, 2, 2.5, 4, 5, 6.25], twice. <strong>ε</strong> = <code>score</code> spread of the independent control (its two rounds’ |Δscore| and their offsets from 1.0); <strong>ε_gap</strong> = spread of its gap@5 (max |gap5| over configs and rounds).</li><li>A round is <strong>kept</strong> if dev-fast <code>score</code> improves on the current best by &gt; max(2ε, 3%) and no guardrail regresses beyond noise. Kept rounds are confirmed on <code>dev-full</code> before a release.</li><li><strong>Success</strong> = a release candidate with <code>test</code> <code>score</code> ≥ 1.15, <code>min_cell_speedup</code> ≥ 0.95 and <code>max_gap5</code> ≤ +ε_gap, with per-seed wins reported. Test is run for release candidates only, and every test run is recorded in the ledger (no silent re-rolls).</li></ul>
+<h2 id="7-candidate-rules">7. Candidate rules</h2>
+<ul class="list"><li>Interface: <code>omeans.fit(x, k, init, effort, seed) -&gt; centroids</code> and <code>omeans.EFFORT_LADDER</code>.</li><li>Hyper-parameters may depend only on (n, d, k, effort) and statistics computed inside the timed call. No branching on dataset identity, no reading eval rows, no state carried between calls (the warm-up call must not make the timed call cheaper except through compiled-kernel caches).</li><li>Place ladder points near each target’s cost (e-means@1, @2, @3 times on this machine, see <code>refs/</code>): the envelope is a chord between ladder points, and on the convex MSE-vs-log-time curve a chord over a gap is conservative. Measured pre-lock: e-means with another seed on a ladder without a T≈3 point scored 0.966 / 0.953 (T=3 cells 0.75–1.01) instead of ≈ 1.0.</li><li><code>fit</code> may return <code>(centroids, info)</code>; <code>info["dist_evals"]</code> (point–centroid distance evaluations) and <code>info["passes"]</code> are logged as hardware-neutral cost, never scored.</li><li>Any precision, any library, GPU + 32 CPU threads. Anything fitted (laws, constants) is fitted on dev suites only.</li></ul>
+<h2 id="7b-reporting">7b. Reporting</h2>
+<p>Because e-means cannot use its H100-only kernels on this GPU, part of any win is implementation. Every release report therefore decomposes the headline into <strong>systems</strong> (o-means v0 = e-means’ algorithm on o-means kernels, vs reference e-means) and <strong>algorithm</strong> (release vs v0, same kernels), alongside hardware-neutral cost (<code>dist_evals</code>) at each target.</p>
+<h2 id="8-deviations-from-the-paper">8. Deviations from the paper</h2>
+<ul class="list"><li>Hardware: RTX 5090 instead of H100; e-means’ CuTe (SM90-only) kernels are unavailable, so the reference runs its Triton backend. Speedups are therefore <em>on this machine</em>.</li><li>One process per (config, seed) with paired, interleaved fits, instead of one process per fit.</li><li>3–5 seeds instead of 10; seeds are pooled per config before the crossing (§5).</li><li>Speedup targets are e-means@{1, 2, 3} rather than Flash-KMeans@25 (Lloyd@25 MSE is still computed once per config/seed and shown as an anchor line); T=5 is an equal-time quality guardrail only. Reason (measured pre-lock): single-run MSE noise between e-means seeds is ~0.1–0.3% (seed-to-seed spread of e-means@T on dev-fast 0.05–0.34%), which exceeds what epochs beyond ~4 buy (DEEP 1M e-means@5 0.38525 vs @8 0.38538); an e-means copy with another internal seed never reached the paired e-means@5 MSE within 6.25 epochs on 5 of 15 (config, seed) pairs (all DEEP seeds, 2 of 3 SIFT; per-seed speedup 0.43–0.44 there) and ranged 0.83–2.12 on the others, so time-to-e-means@5 is a lottery for an <em>equal</em> algorithm. The paper likewise measures time-to-quality only at the Lloyd@25 level (≈ e-means@2, Table 4) and reports fixed-budget MSE for higher budgets (Table 5).</li><li>Target crossing is interpolated on the candidate’s (seed-pooled) ladder (§5); the paper’s strict crossing is reported as a secondary column. MSE ties within 1e-9 relative count as reaching a target.</li><li>Per-seed starts are the paper’s recipe but do not reproduce the paper’s exact permutations on this GPU; reproduction is validated at the median level.</li><li>No 100M/1B configs in the locked suites (memory); DEEP 100M may be reported as a scale probe.</li></ul>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <img src="../../../assets/logo.png" alt="Owlgebra AI" class="footer__brand-logo" />
+          <span class="footer__brand-name">Owlgebra AI</span>
+          <p class="footer__tagline">From idea to self-improving agent.</p>
+        </div>
+        <div class="footer__links-group">
+          <h4>Platform</h4>
+          <ul>
+            <li><a href="../../../#platform">Persona Mining</a></li>
+            <li><a href="../../../#platform-detail">Rubric-Based Eval</a></li>
+            <li><a href="../../../#platform-detail">Journey Analytics</a></li>
+            <li><a href="../../../#self-improving">Self-Improving</a></li>
+          </ul>
+        </div>
+        <div class="footer__links-group">
+          <h4>Research</h4>
+          <ul>
+            <li><a href="../../../#research">Papers</a></li>
+            <li><a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener">Open Source</a></li>
+            <li><a href="../../../#blog">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer__links-group">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="../../../#contact">Contact</a></li>
+            <li><a href="https://github.com/owlgebra-ai" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 Owlgebra AI. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="../../../js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+/* ============================================================
+   o-means post: article layout, figures and tables.
+   Loads after ../../css/style.css and reuses its tokens.
+   ============================================================ */
+
+:root {
+  --text-w: 720px;
+  --wide-w: 960px;
+  /* Chart series. The site is monochrome, so series differ by
+     lightness, line style and marker shape, never by hue alone. */
+  --c-omeans: var(--black);
+  --c-emeans: var(--gray-600);
+  --c-lloyd: #8a8a8a;     /* gray-400 darkened to keep 3:1 on white */
+  --c-v0: var(--gray-600);
+  --c-grid: var(--gray-200);
+  --c-axis: var(--gray-400);
+}
+
+/* Without the home page's reveal script nothing on the post is hidden. */
+.post-page { background: var(--white); }
+
+.post {
+  padding: calc(var(--nav-h) + 4rem) clamp(1rem, 4vw, 3rem) 6rem;
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  color: var(--black);
+}
+.post > * {
+  max-width: var(--text-w);
+  margin-left: auto;
+  margin-right: auto;
+}
+.post > .wide { max-width: var(--wide-w); }
+
+/* ── Header ─────────────────────────────────────────────────── */
+.post__header { margin-bottom: 2.5rem; }
+.post__header .section-label { margin-bottom: 1rem; }
+.post__title {
+  font-size: clamp(2rem, 4.6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+.post__byline {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  margin-bottom: 1.25rem;
+}
+.post__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.post__links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.post__links a:hover { background: var(--gray-50); border-color: var(--gray-400); }
+
+/* ── Prose ──────────────────────────────────────────────────── */
+.post p { margin-bottom: 1.25rem; }
+.post a:not(.btn) {
+  text-decoration: underline;
+  text-decoration-color: var(--gray-400);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.post a:not(.btn):hover { text-decoration-color: var(--black); }
+.post__links a, .post__links a:hover { text-decoration: none; }
+.post h2 {
+  font-size: clamp(1.5rem, 2.6vw, 1.875rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+}
+.post h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 2.25rem auto 0.75rem;
+}
+.post .section-label { margin-top: 4.5rem; margin-bottom: 0.6rem; }
+.post ol, .post ul.list {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.post ol { list-style: decimal; }
+.post ul.list { list-style: disc; }
+.post li { margin-bottom: 0.35rem; padding-left: 0.25rem; }
+.post i.v { font-style: italic; }
+.post code {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86em;
+  background: var(--gray-100);
+  border-radius: 4px;
+  padding: 0.1em 0.3em;
+}
+.post pre {
+  background: var(--gray-50);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.post pre code { background: none; padding: 0; font-size: inherit; }
+.num, .post td, .post tfoot th { font-variant-numeric: tabular-nums; }
+.nw { white-space: nowrap; }
+
+/* ── Figures ────────────────────────────────────────────────── */
+.fig { margin-top: 2.5rem; margin-bottom: 2.75rem; }
+.fig svg { display: block; width: 100%; height: auto; overflow: visible; }
+.fig svg text { font-family: var(--font); fill: var(--black); }
+.fig figcaption, .table-caption {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--gray-600);
+  max-width: var(--text-w);
+  margin: 1rem auto 0;
+}
+.fig figcaption b, .table-caption b { color: var(--black); font-weight: 600; }
+
+/* Figure 1: four panels, axis toggle (pure CSS, works without JS) */
+.fig1__controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  color: var(--gray-600);
+}
+.seg { display: inline-flex; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); overflow: hidden; }
+.seg label {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  user-select: none;
+}
+.seg label + label { border-left: 1px solid var(--border-strong); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+#fig1x-s:checked ~ .fig1__controls label[for="fig1x-s"],
+#fig1x-d:checked ~ .fig1__controls label[for="fig1x-d"] { background: var(--black); color: var(--white); }
+#fig1x-s:focus-visible ~ .fig1__controls label[for="fig1x-s"],
+#fig1x-d:focus-visible ~ .fig1__controls label[for="fig1x-d"] { outline: 2px solid var(--black); outline-offset: 2px; }
+#fig1x-s:checked ~ .fig1__view--d,
+#fig1x-d:checked ~ .fig1__view--s { display: none; }
+.fig1__key { font-size: 0.8rem; color: var(--gray-600); margin: -0.25rem 0 1rem; }
+.fig1__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 2rem;
+}
+@media (max-width: 640px) {
+  .fig1__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Figure 2: three panels, stacked below 720px */
+.fig2__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.fig2__panel p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--gray-600);
+  margin: 0.4rem 0 0;
+}
+.fig2__step {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.25rem; height: 1.25rem; border: 1px solid var(--gray-600); border-radius: 50%;
+  font-size: 0.7rem; font-weight: 600; color: var(--black); margin-right: 0.2rem;
+}
+.fig2__sums {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--gray-600);
+  font-variant-numeric: tabular-nums;
+}
+.fig2__sums p { margin: 0; }
+.fig2__sums b { color: var(--black); font-weight: 600; }
+@media (max-width: 720px) {
+  .fig2__grid { grid-template-columns: minmax(0, 1fr); max-width: 420px; margin: 0 auto; }
+}
+
+/* Figure 3: wide and narrow drawings of the same chart */
+.fig3__narrow { display: none; }
+@media (max-width: 600px) {
+  .fig3__wide { display: none; }
+  .fig3__narrow { display: block; }
+}
+
+/* Chart marks */
+.ax-grid { stroke: var(--c-grid); stroke-width: 1; }
+.ax-line { stroke: var(--c-axis); stroke-width: 1; }
+.ax-zero { stroke: var(--c-lloyd); stroke-width: 1; stroke-dasharray: 4 3; }
+.ax-tick { font-size: 11px; fill: var(--gray-600) !important; }
+.ax-title { font-size: 11px; fill: var(--gray-600) !important; }
+.p-title { font-size: 13px; font-weight: 600; }
+.p-sub { font-size: 11px; fill: var(--gray-600) !important; font-weight: 400; }
+.s-label { font-size: 11.5px; font-weight: 600; }
+.s-label--e { fill: var(--c-emeans) !important; }
+.s-label--l { fill: var(--gray-600) !important; font-weight: 500; }
+.l-omeans { fill: none; stroke: var(--c-omeans); stroke-width: 2; stroke-linejoin: round; }
+.l-emeans { fill: none; stroke: var(--c-emeans); stroke-width: 1.5; stroke-linejoin: round; }
+.l-emeans-sep { fill: none; stroke: var(--c-emeans); stroke-width: 1; stroke-dasharray: 1 3; }
+.l-lloyd { fill: none; stroke: var(--c-lloyd); stroke-width: 1.5; stroke-dasharray: 5 3; }
+.m-omeans { fill: var(--c-omeans); stroke: var(--white); stroke-width: 1.25; }
+.m-emeans { fill: var(--white); stroke: var(--c-emeans); stroke-width: 1.5; }
+.m-lloyd { fill: var(--white); stroke: var(--c-lloyd); stroke-width: 1.5; }
+.m-faiss { fill: var(--c-lloyd); stroke: var(--white); stroke-width: 1; }
+.m-v0 { fill: var(--white); stroke: var(--c-v0); stroke-width: 1.5; }
+.m-clip { fill: var(--c-omeans); }
+.m-hit { fill: transparent; stroke: none; }
+.bracket { fill: none; stroke: var(--black); stroke-width: 1; }
+.bracket-label { font-size: 11.5px; font-weight: 600; }
+.r-omeans { stroke: var(--c-omeans); stroke-width: 1; opacity: 0.35; }
+.r-v0 { stroke: var(--c-v0); stroke-width: 1; opacity: 0.35; }
+.t-num { font-size: 9px; fill: var(--gray-600) !important; }
+.row-label { font-size: 12px; }
+.row-label--all { font-weight: 600; }
+.row-sep { stroke: var(--border-strong); stroke-width: 1; }
+.ref-one { stroke: var(--gray-600); stroke-width: 1.25; }
+.val-label { font-size: 11px; font-weight: 600; }
+
+/* Figure 2 marks */
+.f2-plot { fill: none; stroke: var(--border-strong); stroke-width: 1; }
+.f2-hull { fill: var(--gray-50); stroke: var(--gray-200); stroke-width: 1; }
+.f2-hull--probed { fill: var(--gray-100); stroke: var(--gray-600); }
+.f2-c { fill: var(--gray-400); }
+.f2-c--win { fill: var(--black); }
+.f2-centre { stroke: var(--gray-600); stroke-width: 1.5; }
+.f2-letter { font-size: 11px; fill: var(--gray-600) !important; font-weight: 600; }
+.f2-q { fill: var(--black); }
+.f2-qlabel { font-size: 13px; font-style: italic; }
+.f2-d { stroke: var(--gray-400); stroke-width: 0.75; }
+.f2-dc { stroke: var(--gray-400); stroke-width: 0.75; stroke-dasharray: 3 2; }
+.f2-win { stroke: var(--black); stroke-width: 2; }
+.f2-miss { fill: var(--white); stroke: var(--black); stroke-width: 1.5; }
+.f2-missline { stroke: var(--black); stroke-width: 1; stroke-dasharray: 1 3; stroke-linecap: round; }
+.f2-dlabel { font-size: 10px; fill: var(--gray-600) !important; }
+.f2-wlabel { font-size: 10.5px; font-weight: 600; }
+.f2-counter { font-size: 13px; font-variant-numeric: tabular-nums; }
+.f2-callout { font-size: 10px; fill: var(--black); }
+.f2-leader { stroke: var(--black); stroke-width: 0.75; fill: none; }
+.f2-step circle { fill: var(--white); stroke: var(--gray-600); stroke-width: 1; }
+.f2-step text { font-size: 11px; font-weight: 600; }
+@media (max-width: 380px) {
+  .f2-dlabel { font-size: 9px; }
+}
+
+/* ── Tables ─────────────────────────────────────────────────── */
+.table-block { margin-top: 2.25rem; margin-bottom: 2.75rem; }
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.table-wrap:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; }
+.post table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+.post th, .post td {
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+.post thead th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-align: right;
+  background: var(--gray-50);
+  white-space: normal;
+  min-width: 5rem;
+}
+.post thead tr:last-child th { border-bottom: 1px solid var(--border-strong); }
+.post thead th.grp { text-align: center; border-bottom: 1px solid var(--border); }
+.post th[scope="row"], .post thead th.l, .post td.l { text-align: left; }
+.post th[scope="row"] { font-weight: 500; }
+.post td { text-align: right; }
+.post tbody tr:last-child th, .post tbody tr:last-child td { border-bottom: none; }
+.post tfoot th, .post tfoot td {
+  border-top: 1px solid var(--border-strong);
+  border-bottom: none;
+  font-weight: 600;
+}
+.post td.na { color: var(--gray-400); }
+.post tr.reverted th, .post tr.reverted td { color: var(--gray-600); font-weight: 400; }
+.post td.sep, .post th.sep { border-left: 1px solid var(--border); }
+/* first column stays put while the table scrolls sideways */
+.post th[scope="row"], .post thead th:first-child {
+  position: sticky; left: 0; z-index: 1; background: var(--white);
+}
+.post thead th:first-child { background: var(--gray-50); }
+.post tfoot th[scope="row"] { background: var(--white); }
+.table-block .table-caption { margin: 0 0 0.75rem; max-width: none; }
+#table-3 th[scope="row"], #table-4 th[scope="row"] { white-space: normal; min-width: 11rem; }
+.fig2__panel p { padding-left: 3.125%; }
+@media (max-width: 640px) {
+  /* charts scale down on phones; keep their small text legible */
+  .fig1 .ax-tick, .fig1 .ax-title { font-size: 12.5px; }
+  .fig1 .p-sub { font-size: 12.5px; }
+  .fig1 .p-title { font-size: 14.5px; }
+}
+.table-note {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--gray-600);
+  margin-top: 0.75rem;
+}
+
+/* ── Links list, preview banner, unfinished values ──────────── */
+.post ul.refs { margin-bottom: 1.25rem; }
+.post ul.refs li { margin-bottom: 0.6rem; padding-left: 0; }
+.preview-banner {
+  border: 1.5px dashed var(--black);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  margin-bottom: 2rem;
+  background: var(--gray-50);
+}
+.ph-missing {
+  font-family: var(--font-mono), ui-monospace, Menlo, monospace;
+  font-size: 0.85em;
+  background: #ffe8a3;
+  color: var(--black);
+  outline: 1px dashed var(--black);
+  padding: 0 0.15em;
+}
+.ph-preview { border-bottom: 1.5px dotted var(--black); }
+
+/* ── Document pages (report, protocol) ──────────────────────── */
+.doc-note { font-size: 0.9rem; color: var(--gray-600); margin-bottom: 2rem; }
+.post.doc h2 { margin-top: 3rem; }
+.post.doc table { margin: 0; }
+.post.doc td, .post.doc th { white-space: normal; text-align: left; min-width: 0; vertical-align: top; }
+.post.doc .table-wrap { margin-bottom: 1.5rem; }
+.post.doc li > p { margin-bottom: 0.5rem; }
+
+@media (max-width: 767px) {
+  .post { padding-top: calc(var(--nav-h) + 2.5rem); font-size: 1rem; }
+  .post .section-label { margin-top: 3.25rem; }
+}
+.post.doc td { font-variant-numeric: normal; }
