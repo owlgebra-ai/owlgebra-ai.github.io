@@ -1,20 +1,15 @@
 {
  "meta": {
-  "generated": "2026-11-12T21:14:40+00:00",
-  "git_sha": "d135e41910d3f2544a0f046b5654973e38833bd2",
+  "generated": "2026-11-12T21:19:18+00:00",
+  "git_sha": "c08b62f62e8d6422589a648df7de0a36733311c7",
   "protocol": "v1",
   "gpu": "NVIDIA GeForce RTX 5090",
   "baseline2": {
    "impl": "pytorch-lloyd-fp32",
    "note": "data-spec §4.1 fallback: the faiss25 fields hold a plain PyTorch Lloyd in single precision, not faiss (no faiss GPU build with sm_120 code installed in this session); there is no stock arm"
   },
-  "stated_check_failures": [
-   "<=1.5M / SPACEV 10M",
-   "SPACEV 10M T=2 t_e -> t_star"
-  ],
-  "notes": [
-   "ladder story recomputed from scores reads '+6.0 then +10.2; -3.8' (r1/r0 = 1.05954); the draft's +5.9% is the ledger description's truncated figure"
-  ],
+  "stated_check_failures": [],
+  "notes": [],
   "inputs": [
    {
     "path": "blog/data/agg_devfast_r4c_main.json",
