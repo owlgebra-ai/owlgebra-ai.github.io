@@ -1,12 +1,12 @@
 {
  "meta": {
-  "generated": "2026-11-12T21:19:18+00:00",
-  "git_sha": "c08b62f62e8d6422589a648df7de0a36733311c7",
+  "generated": "2026-11-13T00:14:47+00:00",
+  "git_sha": "0e6a32066091f3f7e3ed774084b2716955b7039e",
   "protocol": "v1",
   "gpu": "NVIDIA GeForce RTX 5090",
   "baseline2": {
-   "impl": "pytorch-lloyd-fp32",
-   "note": "data-spec §4.1 fallback: the faiss25 fields hold a plain PyTorch Lloyd in single precision, not faiss (no faiss GPU build with sm_120 code installed in this session); there is no stock arm"
+   "impl": "faiss-gpu-1.14.3",
+   "note": "the faiss25 fields hold faiss GPU k-means (conda-forge faiss-gpu, CUDA 13.0 build; the PyPI wheel has no RTX 5090 kernels): faiss's contrib k-means loop with faiss.knn_gpu on resident tensors. faiss25_stock_s is faiss.Kmeans(gpu=True) on host arrays, measured up to 2M rows. The torch25 fields hold a plain PyTorch Lloyd in single precision, kept as a cross-check"
   },
   "stated_check_failures": [],
   "notes": [],
@@ -30,6 +30,322 @@
    {
     "path": "blog/data/agg_test_v0.json",
     "sha256": "dbaa81d93adf335e16b4b97af1b7c0a694510187b8d610159dd4e0002955bdd7"
+   },
+   {
+    "path": "blog/data/faiss25/agnews/s10.json",
+    "sha256": "2d8ba425c5722eaf6d25544773abf7538ace1325e939cc5b116d56201478d251"
+   },
+   {
+    "path": "blog/data/faiss25/agnews/s11.json",
+    "sha256": "567a80669714c8981db2c71d3139bf64b71e77058930a4a1181ddc2d02ff35c8"
+   },
+   {
+    "path": "blog/data/faiss25/agnews/s12.json",
+    "sha256": "b0c0995c4fe817315dc37c0d44abc30ab62bb0301f6dc2596fca1f18f12bb92c"
+   },
+   {
+    "path": "blog/data/faiss25/agnews/s13.json",
+    "sha256": "4a30d05782d520ebbe6fb12d3ceb8a8aa9aa8309053e376b447760a2b6818a0e"
+   },
+   {
+    "path": "blog/data/faiss25/agnews/s14.json",
+    "sha256": "d7f288054528fd6c009db915daa00e0b064db9554902dcea76d5d4754b0fd65f"
+   },
+   {
+    "path": "blog/data/faiss25/arxiv768/s10.json",
+    "sha256": "d318e9601c6de1267137558e4ee8ae27a8a666a8de1900b15393dce1f4651291"
+   },
+   {
+    "path": "blog/data/faiss25/arxiv768/s11.json",
+    "sha256": "cefeb8383e1ae120d4b473b1a739b8572fc4184835fbd06a0be6d5d29ab7680d"
+   },
+   {
+    "path": "blog/data/faiss25/arxiv768/s12.json",
+    "sha256": "d9b7d7713623744a30b505c05a0785f9fcee0bd3361505b4773df8131af5a207"
+   },
+   {
+    "path": "blog/data/faiss25/arxiv768/s13.json",
+    "sha256": "cd6acc033f8fff68cb26378e1fb6152a3f6c32cbf8f6dc0fb5d137ec201a6a74"
+   },
+   {
+    "path": "blog/data/faiss25/arxiv768/s14.json",
+    "sha256": "bed110fe6db9f535c862ae034ef584eb2ceb16dbe2c06646e20a7d0d89c5af38"
+   },
+   {
+    "path": "blog/data/faiss25/ccnews/s10.json",
+    "sha256": "f26ac47f1268ca19c004202d3ccd0c1acf1b127279f17c320a85ccbe4fb00a12"
+   },
+   {
+    "path": "blog/data/faiss25/ccnews/s11.json",
+    "sha256": "ed83a36899f3c90b454a632e621c1ca91c3cd33c28c2978f419e155ad7de43c5"
+   },
+   {
+    "path": "blog/data/faiss25/ccnews/s12.json",
+    "sha256": "8f23fe812782610382fca71d5f7c24da895e2fefde8208b39f1481f532d4ad62"
+   },
+   {
+    "path": "blog/data/faiss25/ccnews/s13.json",
+    "sha256": "4615dd348b6158a2c9a0919de34e48426f7fadd02ef83dbec1376176154039d7"
+   },
+   {
+    "path": "blog/data/faiss25/ccnews/s14.json",
+    "sha256": "980b92a5e7c0654b45df7e08ae21d6b119da92361a13cd693183bd51a96e3f89"
+   },
+   {
+    "path": "blog/data/faiss25/celeba/s10.json",
+    "sha256": "6e40bfc318d9b4372bcf5afff797bdc8cdd71b2b773d0e4ab5119d57cc91d5c3"
+   },
+   {
+    "path": "blog/data/faiss25/celeba/s11.json",
+    "sha256": "6405ef9b47c77071bd2427892ef6e1b8b238ad0157ef150e10b1318c4ae12f3d"
+   },
+   {
+    "path": "blog/data/faiss25/celeba/s12.json",
+    "sha256": "f16fa393c6046a653be2bd559a81a7a2220293e88aaa8f0fc3a1d00f836f318f"
+   },
+   {
+    "path": "blog/data/faiss25/celeba/s13.json",
+    "sha256": "1e2268eab82db2e16906d546c502af119596d74aa08395ca8f736b6338cbad5b"
+   },
+   {
+    "path": "blog/data/faiss25/celeba/s14.json",
+    "sha256": "778615cc857286168bd02b5633e77cf60eee7efa0137e910d9c7ac46ef737c59"
+   },
+   {
+    "path": "blog/data/faiss25/codesearchnet/s10.json",
+    "sha256": "671c75a78cd57f9e93faa7f5aefacb821dcf85e90fc5a53bc1db6291efd94ade"
+   },
+   {
+    "path": "blog/data/faiss25/codesearchnet/s11.json",
+    "sha256": "449ef895dd74ca05e7fccfc7b0315ce4548e38c6407519cfae4a9443dddd214f"
+   },
+   {
+    "path": "blog/data/faiss25/codesearchnet/s12.json",
+    "sha256": "2f9c4da78a12de49c7b08f990d5601aca2eef1546b441bcb49c27ceb8aa9b34a"
+   },
+   {
+    "path": "blog/data/faiss25/codesearchnet/s13.json",
+    "sha256": "8e2c4ebdd3b0d8867ba6da40d23109a3cd8ef15c4f25db955c113a04182134fe"
+   },
+   {
+    "path": "blog/data/faiss25/codesearchnet/s14.json",
+    "sha256": "6be23807f120af6ec0e9f4266f06c9c3b019113fed2a326559483e62a0df7cb6"
+   },
+   {
+    "path": "blog/data/faiss25/deep10m/s10.json",
+    "sha256": "e7538e87e2dafe5977e5f19b5b2cc62c078b17e1a98741c3cbef836b00cca939"
+   },
+   {
+    "path": "blog/data/faiss25/deep10m/s11.json",
+    "sha256": "b27257519ee4f3e33f31c9ca3afe38e170c2bce9b1989eafcd2dffdbdf6e11f1"
+   },
+   {
+    "path": "blog/data/faiss25/deep10m/s12.json",
+    "sha256": "fe305cfd20f328d96dcb307a7ba8de2b85c6b72d14bab24f38b546a94bfe475c"
+   },
+   {
+    "path": "blog/data/faiss25/deep1m/s10.json",
+    "sha256": "49d7729e6a7314591453b99e9c2a599cc5c4951fce047c82c39e478078c22496"
+   },
+   {
+    "path": "blog/data/faiss25/deep1m/s11.json",
+    "sha256": "344dab7ea078bef4eaaa3e4818105843db5a2586934162843c628a7db9bf16c0"
+   },
+   {
+    "path": "blog/data/faiss25/deep1m/s12.json",
+    "sha256": "fbcd497ba0020172ec0e240196cbf337045e435cff02f4ceee8fab1ee25859c9"
+   },
+   {
+    "path": "blog/data/faiss25/deep1m/s13.json",
+    "sha256": "8fcd543c9a11e5da79ed670ddc87d2c45fca553da69caac056825878e35a5ca0"
+   },
+   {
+    "path": "blog/data/faiss25/deep1m/s14.json",
+    "sha256": "0a43b7f91fa52a454e6f7951386f5d0575deb5e00a2a9e3b50b0072630402f81"
+   },
+   {
+    "path": "blog/data/faiss25/glove200/s10.json",
+    "sha256": "c8439f319eafedea326976d62272ac0848c03a7f015beceeb47245f403b8c4f8"
+   },
+   {
+    "path": "blog/data/faiss25/glove200/s11.json",
+    "sha256": "7aaa7f6dffebee6a0a4a3476d5febd1ec0e5cf8575709a80860141bb4e40c4ac"
+   },
+   {
+    "path": "blog/data/faiss25/glove200/s12.json",
+    "sha256": "bb3f7926791095366663b482306f48e16947f6e496b5518defafc461432efa64"
+   },
+   {
+    "path": "blog/data/faiss25/glove200/s13.json",
+    "sha256": "d54cd143d563c5e2bed564e647fa5bccdb7e2f05b019aff751c529cd90f702ae"
+   },
+   {
+    "path": "blog/data/faiss25/glove200/s14.json",
+    "sha256": "5e6d54ff9a6276bd0a7a28e8241643c74f4b8c45c2324e3bb5e0132b10275c61"
+   },
+   {
+    "path": "blog/data/faiss25/gooaq/s10.json",
+    "sha256": "cdf367d19fdd2330095ba00476c1cc292bedbc0ee2c30fa6af7503312ac65119"
+   },
+   {
+    "path": "blog/data/faiss25/gooaq/s11.json",
+    "sha256": "f1da073ffab70b73108b7511a4e32b3837d00786bf446d1c7aca154d7814cfd9"
+   },
+   {
+    "path": "blog/data/faiss25/gooaq/s12.json",
+    "sha256": "fe08d93f8be466359f4627755e1c41332a28f26ba49bcce6d3f904bdee5c47f7"
+   },
+   {
+    "path": "blog/data/faiss25/gooaq/s13.json",
+    "sha256": "a8ce83068c5af8a78ee1133154fcfaaf36ed5e396fab150bdbcefb77f1b8ad14"
+   },
+   {
+    "path": "blog/data/faiss25/gooaq/s14.json",
+    "sha256": "574546d7e8b8bd2a49cbbac111fd7d4380ad6a5e90b7c18ce2bd8571dc1cd6d1"
+   },
+   {
+    "path": "blog/data/faiss25/imagenetclip/s10.json",
+    "sha256": "82f8aa7f5b78525f683d3eb1bf0c2bbfb4aaaf368ea283f9ea8b5e174d4ef81e"
+   },
+   {
+    "path": "blog/data/faiss25/imagenetclip/s11.json",
+    "sha256": "d3323716163c1b6dedb61ea8bffc079a00685cca4cfe615b78eba68c7dafa094"
+   },
+   {
+    "path": "blog/data/faiss25/imagenetclip/s12.json",
+    "sha256": "85d3aede7972f302ebde1e6bc2e384e98d2e6e640280207058786aa8da7f276a"
+   },
+   {
+    "path": "blog/data/faiss25/imagenetclip/s13.json",
+    "sha256": "f617b17f47a9b3b42ca0460298aefc445b522cb3e93c9092209f732589bf182a"
+   },
+   {
+    "path": "blog/data/faiss25/imagenetclip/s14.json",
+    "sha256": "e6f8919783ed374fca59ea7602ea03f72a1d60f72661b2408e809b849b3fd967"
+   },
+   {
+    "path": "blog/data/faiss25/landmarkdino/s10.json",
+    "sha256": "7aa3b81822a16d1d57bed41e2fad1b66d7f8f517d29f88bcef1869ae87a7251d"
+   },
+   {
+    "path": "blog/data/faiss25/landmarkdino/s11.json",
+    "sha256": "627ae8057289c3f2eb2a881c2db51e89c54950365c62af9943d138e2b7f2bb90"
+   },
+   {
+    "path": "blog/data/faiss25/landmarkdino/s12.json",
+    "sha256": "b9216500c36abb48b46623dc1f45683adb25778543e314b9f304cfd3b3b64691"
+   },
+   {
+    "path": "blog/data/faiss25/landmarkdino/s13.json",
+    "sha256": "17ae48680640b6d8465909fa5d2ef1903484b7b8fdb8c93d2caaaf61b48be0d5"
+   },
+   {
+    "path": "blog/data/faiss25/landmarkdino/s14.json",
+    "sha256": "fd2e7cb51b331394c63e2fc1ba836a1c4c8486894248a73ef6dbd12d875a2d36"
+   },
+   {
+    "path": "blog/data/faiss25/landmarknomic/s10.json",
+    "sha256": "f87b1a1fa424f462969cd6b572ef7106c22c26c4b6f9146f463aa5e7becca19d"
+   },
+   {
+    "path": "blog/data/faiss25/landmarknomic/s11.json",
+    "sha256": "61f15bcaef949fe8dfae44b226caf8a1284a03b9c8937702011be4ef5dc489c7"
+   },
+   {
+    "path": "blog/data/faiss25/landmarknomic/s12.json",
+    "sha256": "85568c47cef74e05bdf49dd3dd76b743dcaa8c2f62ddfc146b535ca5cf6051b7"
+   },
+   {
+    "path": "blog/data/faiss25/landmarknomic/s13.json",
+    "sha256": "fbc23f75df7c600bc9e04b48c20920dfdef5652d0c8d24ed69a6cd689175c571"
+   },
+   {
+    "path": "blog/data/faiss25/landmarknomic/s14.json",
+    "sha256": "c2a66e2c85e88d0b9d0859f5f19f4a3bc471220d9efbcbb7325532c1132ac022"
+   },
+   {
+    "path": "blog/data/faiss25/sift10m/s10.json",
+    "sha256": "7657481cc57636b01936b88b3846f352884970e23b824f55a17c2023dbc9db82"
+   },
+   {
+    "path": "blog/data/faiss25/sift10m/s11.json",
+    "sha256": "d4d069ee277b784a8d87136195847d44edb38126463e6877f78bb92f5fb8d195"
+   },
+   {
+    "path": "blog/data/faiss25/sift10m/s12.json",
+    "sha256": "31c0533fca68b4553a0c018ebc18b3980c326c7b26b4773bc40a765e19e8291b"
+   },
+   {
+    "path": "blog/data/faiss25/sift1m/s10.json",
+    "sha256": "29e502ec69b6bb0fda58057288cdb7aff4da51da647543292e42e303805c01b8"
+   },
+   {
+    "path": "blog/data/faiss25/sift1m/s11.json",
+    "sha256": "f9baf00c1bb927c051446d23433954983eb17fedf6b10301b736b060e39ded1b"
+   },
+   {
+    "path": "blog/data/faiss25/sift1m/s12.json",
+    "sha256": "9170867ba070d1e540dbe9a5f0081d2e12b1ac57c3ec4f6ea86b1024b205dea0"
+   },
+   {
+    "path": "blog/data/faiss25/sift1m/s13.json",
+    "sha256": "ce286a988d0501130ddd479249361419e909b25271748cdb5e05248d3b6c1f14"
+   },
+   {
+    "path": "blog/data/faiss25/sift1m/s14.json",
+    "sha256": "9d5d094d88c4c92f1ac503d5d78eb4c780a64fe6c42b3b92b23062b6d3381ad0"
+   },
+   {
+    "path": "blog/data/faiss25/simplewiki/s10.json",
+    "sha256": "7ac0e0588d6743bed62b1c525c6d4b05074c7463cc5ad46ee771bd7c6c3d604c"
+   },
+   {
+    "path": "blog/data/faiss25/simplewiki/s11.json",
+    "sha256": "2ab94a7638adbc50a4fb15a322e1e6bb02357a51707a87cc986a51c20ef0747a"
+   },
+   {
+    "path": "blog/data/faiss25/simplewiki/s12.json",
+    "sha256": "db592a8142f8673d1a9ad711fe6b88e99c563263f6578fc3acdf8444e8708310"
+   },
+   {
+    "path": "blog/data/faiss25/simplewiki/s13.json",
+    "sha256": "e2e3b81ad2c475d5cc1a44b06481ed5d20f48aa73c4ddbb6ff5f326838d49b70"
+   },
+   {
+    "path": "blog/data/faiss25/simplewiki/s14.json",
+    "sha256": "138d0fb683a2ec2c24af0d6089b9e92d87a4b2962734289d9cfd66ee4b8c3334"
+   },
+   {
+    "path": "blog/data/faiss25/spacev10m/s10.json",
+    "sha256": "3f27220fbc1fb4961734ad2d32c1bc55e531755e1ebd1c0cdf3592b1daf9a699"
+   },
+   {
+    "path": "blog/data/faiss25/spacev10m/s11.json",
+    "sha256": "6134e9df5f7149e450c46d307a0d8a08b62b3fd5ae9344de91f13d5dd2bb9408"
+   },
+   {
+    "path": "blog/data/faiss25/spacev10m/s12.json",
+    "sha256": "1ac2de274f075d5cae39ba9b659c6a5521242018ab0ab634a39905bc9e529a28"
+   },
+   {
+    "path": "blog/data/faiss25/spacev1m/s10.json",
+    "sha256": "6541d25401dc7b9234152645cc361148edc79a4edc68d6509974127b34409341"
+   },
+   {
+    "path": "blog/data/faiss25/spacev1m/s11.json",
+    "sha256": "4501f777ef8f1d5e241b449483f133306ad77739564d244f3d1235b68c4377fa"
+   },
+   {
+    "path": "blog/data/faiss25/spacev1m/s12.json",
+    "sha256": "cb46948b24c0a42e35c82db535e211eb2c1d9489327477075b1a393decff0ea0"
+   },
+   {
+    "path": "blog/data/faiss25/spacev1m/s13.json",
+    "sha256": "f0fabce2bb232f8826e812f5c02d37f7f995b25795411f225bcaff86e71f14d6"
+   },
+   {
+    "path": "blog/data/faiss25/spacev1m/s14.json",
+    "sha256": "7624b3284fa3cd9ed2684a8bf79a7119c0ee3335090421f0ff4aa4e83cb4a9eb"
    },
    {
     "path": "blog/data/lloyd25fp32/agnews/s10.json",
@@ -3301,6 +3617,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 3.0949045566027054,
+    "mse": 7229.484776382194,
+    "train_mse": 6930.9747471028095,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 4.410236098799942,
@@ -3528,6 +3852,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 3,
+    "seconds": 122.98885820433013,
+    "mse": 6375.272887103929,
+    "train_mse": 6253.889713922144,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 3,
     "seconds": 174.9492952319985,
@@ -3538,54 +3870,54 @@
    "lloyd_trajectory": [
     {
      "iter": 1,
-     "seconds": 6.953662121999514,
+     "seconds": 4.838302112002566,
      "mse": 6938.9945461215975,
      "passes": 1
     },
     {
      "iter": 2,
-     "seconds": 13.962402825996833,
-     "mse": 6675.006839566128,
+     "seconds": 9.774804260006931,
+     "mse": 6675.0064541925085,
      "passes": 2
     },
     {
      "iter": 3,
-     "seconds": 20.96918218299834,
-     "mse": 6572.789186643145,
+     "seconds": 14.714044373002253,
+     "mse": 6572.791783016173,
      "passes": 3
     },
     {
      "iter": 5,
-     "seconds": 34.98559645899877,
-     "mse": 6481.490699109559,
+     "seconds": 24.597297244996298,
+     "mse": 6481.488739954158,
      "passes": 5
     },
     {
      "iter": 8,
-     "seconds": 56.01237699899866,
-     "mse": 6425.556716244303,
+     "seconds": 39.42719620299613,
+     "mse": 6425.5338297660555,
      "passes": 8
     },
     {
      "iter": 12,
-     "seconds": 84.0527868859972,
-     "mse": 6395.987931125513,
+     "seconds": 59.195332555995265,
+     "mse": 6396.3997962821695,
      "passes": 12
     },
     {
      "iter": 17,
-     "seconds": 119.1139816449977,
-     "mse": 6381.842963445922,
+     "seconds": 83.94093749399326,
+     "mse": 6382.618771380322,
      "passes": 17
     },
     {
      "iter": 25,
-     "seconds": 175.19552802899852,
-     "mse": 6370.451598669769,
+     "seconds": 123.53825217799022,
+     "mse": 6371.176392055859,
      "passes": 25
     }
    ],
-   "lloyd_trajectory_note": "pytorch-lloyd-fp32, seed 10 only, one instrumented run",
+   "lloyd_trajectory_note": "faiss-gpu-1.14.3, seed 10 only, one instrumented run",
    "emeans_paired": [
     {
      "T": 1,
@@ -3804,6 +4136,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 9.101170699999784,
+    "mse": 0.2132211620254619,
+    "train_mse": 0.2027859772200788,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 9.50485420440018,
@@ -3814,54 +4154,54 @@
    "lloyd_trajectory": [
     {
      "iter": 1,
-     "seconds": 0.38168893400143133,
-     "mse": 0.22431156078341363,
+     "seconds": 0.3599201340039144,
+     "mse": 0.22431108393781987,
      "passes": 1
     },
     {
      "iter": 2,
-     "seconds": 0.7564422730029037,
-     "mse": 0.2186004885622593,
+     "seconds": 0.7227534560006461,
+     "mse": 0.21860058206215743,
      "passes": 2
     },
     {
      "iter": 3,
-     "seconds": 1.1315117940030177,
-     "mse": 0.21655388892976007,
+     "seconds": 1.0834971720032627,
+     "mse": 0.21655390344105016,
      "passes": 3
     },
     {
      "iter": 5,
-     "seconds": 1.8921004910043848,
-     "mse": 0.21482111503175147,
+     "seconds": 1.8130620750089292,
+     "mse": 0.21482137050432948,
      "passes": 5
     },
     {
      "iter": 8,
-     "seconds": 3.0296078710052825,
-     "mse": 0.21395537451863092,
+     "seconds": 2.9044694260155666,
+     "mse": 0.21395043923037066,
      "passes": 8
     },
     {
      "iter": 12,
-     "seconds": 4.537464230004844,
-     "mse": 0.21355102025650222,
+     "seconds": 4.3632871490190155,
+     "mse": 0.21352280917332872,
      "passes": 12
     },
     {
      "iter": 17,
-     "seconds": 6.438144310002826,
-     "mse": 0.2133010618532725,
+     "seconds": 6.18661557501764,
+     "mse": 0.2132813050094176,
      "passes": 17
     },
     {
      "iter": 25,
-     "seconds": 9.469231790004415,
-     "mse": 0.21314517323596366,
+     "seconds": 9.100033202019404,
+     "mse": 0.21310952609424216,
      "passes": 25
     }
    ],
-   "lloyd_trajectory_note": "pytorch-lloyd-fp32, seed 10 only, one instrumented run",
+   "lloyd_trajectory_note": "faiss-gpu-1.14.3, seed 10 only, one instrumented run",
    "emeans_paired": [
     {
      "T": 1,
@@ -4080,6 +4420,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 20.329385302597075,
+    "mse": 0.5362034201563407,
+    "train_mse": 0.5197562851300427,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 20.184557686799963,
@@ -4090,54 +4438,54 @@
    "lloyd_trajectory": [
     {
      "iter": 1,
-     "seconds": 0.8080506299993431,
-     "mse": 0.5835667816292118,
+     "seconds": 0.8053973660062184,
+     "mse": 0.5835670773622118,
      "passes": 1
     },
     {
      "iter": 2,
-     "seconds": 1.6128261900012149,
-     "mse": 0.5614824106945805,
+     "seconds": 1.6143494210045901,
+     "mse": 0.5614821204088459,
      "passes": 2
     },
     {
      "iter": 3,
-     "seconds": 2.4183067599988135,
-     "mse": 0.5522723298503024,
+     "seconds": 2.4230432440090226,
+     "mse": 0.5522727867380962,
      "passes": 3
     },
     {
      "iter": 5,
-     "seconds": 4.027965090001089,
-     "mse": 0.5443475191812401,
+     "seconds": 4.048620191009832,
+     "mse": 0.5443485331584702,
      "passes": 5
     },
     {
      "iter": 8,
-     "seconds": 6.447906260000309,
-     "mse": 0.5399571726538246,
+     "seconds": 6.488033081004687,
+     "mse": 0.5399622307465705,
      "passes": 8
     },
     {
      "iter": 12,
-     "seconds": 9.670994131000043,
-     "mse": 0.5376813296136829,
+     "seconds": 9.741084572000545,
+     "mse": 0.5376704957068381,
      "passes": 12
     },
     {
      "iter": 17,
-     "seconds": 13.700967087002937,
-     "mse": 0.5365259392569711,
+     "seconds": 13.810169104996021,
+     "mse": 0.5365268916708478,
      "passes": 17
     },
     {
      "iter": 25,
-     "seconds": 20.15479306200359,
-     "mse": 0.5358408583990002,
+     "seconds": 20.324663718994998,
+     "mse": 0.535866846187484,
      "passes": 25
     }
    ],
-   "lloyd_trajectory_note": "pytorch-lloyd-fp32, seed 10 only, one instrumented run",
+   "lloyd_trajectory_note": "faiss-gpu-1.14.3, seed 10 only, one instrumented run",
    "emeans_paired": [
     {
      "T": 1,
@@ -4356,6 +4704,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 18.915840433600533,
+    "mse": 0.5347805958159915,
+    "train_mse": 0.5163292779561802,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 18.8001819298006,
@@ -4583,6 +4939,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 12.431559424602892,
+    "mse": 116.78378372949369,
+    "train_mse": 110.8920203730457,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 12.407525142799567,
@@ -4810,6 +5174,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 10.293655742998817,
+    "mse": 0.4610468758130947,
+    "train_mse": 0.4357714643380953,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 10.23352838659921,
@@ -5037,6 +5409,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 5.852101075199608,
+    "mse": 0.5947344577562855,
+    "train_mse": 0.5514565444763988,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 5.737292737401003,
@@ -5047,54 +5427,54 @@
    "lloyd_trajectory": [
     {
      "iter": 1,
-     "seconds": 0.23019826800009469,
-     "mse": 0.6197764733267705,
+     "seconds": 0.2234316449976177,
+     "mse": 0.6197765016777559,
      "passes": 1
     },
     {
      "iter": 2,
-     "seconds": 0.45564756500243675,
-     "mse": 0.6061223084805656,
+     "seconds": 0.448172684002202,
+     "mse": 0.6061232764435595,
      "passes": 2
     },
     {
      "iter": 3,
-     "seconds": 0.681710431999818,
-     "mse": 0.6012769568738201,
+     "seconds": 0.6737437740011956,
+     "mse": 0.6012767757698289,
      "passes": 3
     },
     {
      "iter": 5,
-     "seconds": 1.1370567359990673,
-     "mse": 0.5975800895081358,
+     "seconds": 1.128086753997195,
+     "mse": 0.5975770184589985,
      "passes": 5
     },
     {
      "iter": 8,
-     "seconds": 1.8219491629970435,
-     "mse": 0.5958071137883106,
+     "seconds": 1.814623849997588,
+     "mse": 0.5958028481892785,
      "passes": 8
     },
     {
      "iter": 12,
-     "seconds": 2.740907673996844,
-     "mse": 0.5950222543587609,
+     "seconds": 2.7320433299973956,
+     "mse": 0.5950182082242327,
      "passes": 12
     },
     {
      "iter": 17,
-     "seconds": 3.891925675998209,
-     "mse": 0.5948244507812608,
+     "seconds": 3.879927191999741,
+     "mse": 0.5948105229750187,
      "passes": 17
     },
     {
      "iter": 25,
-     "seconds": 5.726232542998332,
-     "mse": 0.5947994152844389,
+     "seconds": 5.722096937999595,
+     "mse": 0.5947820769855677,
      "passes": 25
     }
    ],
-   "lloyd_trajectory_note": "pytorch-lloyd-fp32, seed 10 only, one instrumented run",
+   "lloyd_trajectory_note": "faiss-gpu-1.14.3, seed 10 only, one instrumented run",
    "emeans_paired": [
     {
      "T": 1,
@@ -5313,6 +5693,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 2.847488287599117,
+    "mse": 0.3877445037549132,
+    "train_mse": 0.36226688868646983,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 4.352187068200147,
@@ -5540,6 +5928,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 3.0041495692013997,
+    "mse": 0.1940425903777926,
+    "train_mse": 0.19253129398817076,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 4.4766401789995145,
@@ -5767,6 +6163,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 5.810819551201712,
+    "mse": 0.7088604175925407,
+    "train_mse": 0.6823025839012595,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 6.386318290798954,
@@ -5994,6 +6398,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 18.321981226999196,
+    "mse": 0.21877278144914608,
+    "train_mse": 0.21205938787089446,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 18.22074682960083,
@@ -6221,6 +6633,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 10.151347031199839,
+    "mse": 0.08186648293335566,
+    "train_mse": 0.07646126974818113,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 10.12079887919972,
@@ -6447,7 +6867,15 @@
     "mse": 0.3405908076584802,
     "passes": 25
    },
-   "faiss25": null,
+   "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 3,
+    "seconds": 119.57140262733446,
+    "mse": 0.3406573948600851,
+    "train_mse": 0.3308063522585562,
+    "passes": 25
+   },
+   "torch25": null,
    "lloyd_trajectory": null,
    "lloyd_trajectory_note": null,
    "emeans_paired": [
@@ -6667,7 +7095,15 @@
     "mse": 0.1936413714397356,
     "passes": 25
    },
-   "faiss25": null,
+   "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 3,
+    "seconds": 128.25877280566783,
+    "mse": 0.19370984248917264,
+    "train_mse": 0.17438217677265075,
+    "passes": 25
+   },
+   "torch25": null,
    "lloyd_trajectory": null,
    "lloyd_trajectory_note": null,
    "emeans_paired": [
@@ -6888,6 +7324,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 2.8459445273998427,
+    "mse": 0.24670887100675998,
+    "train_mse": 0.23681085224459092,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 3.2868211044005875,
@@ -7115,6 +7559,14 @@
     "passes": 25
    },
    "faiss25": {
+    "impl": "faiss-gpu-1.14.3",
+    "n_seeds": 5,
+    "seconds": 2.658008646199596,
+    "mse": 0.20969252984314615,
+    "train_mse": 0.186216541963296,
+    "passes": 25
+   },
+   "torch25": {
     "impl": "pytorch-lloyd-fp32",
     "n_seeds": 5,
     "seconds": 2.7115373927998005,
@@ -7341,12 +7793,15 @@
    "flash25_s": 1.3523843260000832,
    "flash25_mse": 7229.666100913147,
    "flash25_tflops": 60.57449677954561,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 4.410236098799942,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": -3.329174180054872e-05,
-   "faiss25_tflops": 18.574969268037837,
-   "faiss25_vs_flash_time": 3.261081938034581,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 3.0949045566027054,
+   "faiss25_stock_s": 3.6315025273972426,
+   "faiss25_stock_rel_mse": -7.714241518808673e-05,
+   "torch25_s": 4.410236098799942,
+   "torch25_rel_mse": -3.329174180054872e-05,
+   "faiss25_rel_mse": -2.508062314665288e-05,
+   "faiss25_tflops": 26.469313835617616,
+   "faiss25_vs_flash_time": 2.2884800548941846,
    "emeans_to_lloyd_s": 0.07347020168616483,
    "emeans_T_upper": 3,
    "omeans_to_lloyd_s": 0.019422287245261387,
@@ -7354,8 +7809,8 @@
    "omeans_passes_equiv": 0.34821853270263675,
    "x_flash_omeans": 69.6305388197796,
    "x_flash_emeans": 18.40724940128687,
-   "x_faiss_omeans": 226.8477625884823,
-   "omeans_to_faiss_s": 0.019441391215307767,
+   "x_faiss_omeans": 159.23012222473744,
+   "omeans_to_faiss_s": 0.01943667764215213,
    "top_rel_lloyd": -0.009819316950450597,
    "top_seconds": 0.0811319052001636,
    "top_time_ratio": 16.66895807097793,
@@ -7374,12 +7829,15 @@
    "flash25_s": 51.61142008700017,
    "flash25_mse": 6374.79663015063,
    "flash25_tflops": 63.48982443180937,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 174.9492952319985,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 122.98885820433013,
    "faiss25_stock_s": null,
-   "faiss25_rel_mse": 2.722112157494591e-05,
-   "faiss25_tflops": 18.729998286958907,
-   "faiss25_vs_flash_time": 3.389740002059438,
+   "faiss25_stock_rel_mse": null,
+   "torch25_s": 174.9492952319985,
+   "torch25_rel_mse": 2.722112157494591e-05,
+   "faiss25_rel_mse": 7.470935638104628e-05,
+   "faiss25_tflops": 26.643063833928917,
+   "faiss25_vs_flash_time": 2.3829776045109914,
    "emeans_to_lloyd_s": 2.3307793385769147,
    "emeans_T_upper": 3,
    "omeans_to_lloyd_s": 0.3665665672606757,
@@ -7387,8 +7845,8 @@
    "omeans_passes_equiv": 0.14451244992777507,
    "x_flash_omeans": 140.796855732612,
    "x_flash_emeans": 22.14341753969389,
-   "x_faiss_omeans": 478.3990679892769,
-   "omeans_to_faiss_s": 0.3656973998032954,
+   "x_faiss_omeans": 337.7088792675689,
+   "omeans_to_faiss_s": 0.3641860364201004,
    "top_rel_lloyd": -0.008730848710844806,
    "top_seconds": 1.7313251949987414,
    "top_time_ratio": 29.810355810733576,
@@ -7407,12 +7865,15 @@
    "flash25_s": 4.056006212600186,
    "flash25_mse": 0.21323794411438085,
    "flash25_tflops": 103.4097035396589,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 9.50485420440018,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 1.650489269661084e-05,
-   "faiss25_tflops": 44.128020375717995,
-   "faiss25_vs_flash_time": 2.343402279531248,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 9.101170699999784,
+   "faiss25_stock_s": 10.830064482599846,
+   "faiss25_stock_rel_mse": -6.963895661695796e-05,
+   "torch25_s": 9.50485420440018,
+   "torch25_rel_mse": 1.650489269661084e-05,
+   "faiss25_rel_mse": -7.87012320375148e-05,
+   "faiss25_tflops": 46.08532394629297,
+   "faiss25_vs_flash_time": 2.2438749407549086,
    "emeans_to_lloyd_s": 0.19469697117606288,
    "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.04007554224195026,
@@ -7420,8 +7881,8 @@
    "omeans_passes_equiv": 0.1816477130126953,
    "x_flash_omeans": 101.20901641486567,
    "x_flash_emeans": 20.832405291669243,
-   "x_faiss_omeans": 237.36387761932838,
-   "omeans_to_faiss_s": 0.04004338949856373,
+   "x_faiss_omeans": 226.2328771168759,
+   "omeans_to_faiss_s": 0.040229213436992886,
    "top_rel_lloyd": -0.009631271595356561,
    "top_seconds": 0.26948226939930464,
    "top_time_ratio": 15.05110603989389,
@@ -7440,12 +7901,15 @@
    "flash25_s": 10.84108362679999,
    "flash25_mse": 0.5361416031166262,
    "flash25_tflops": 84.44007804085254,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 20.184557686799963,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 9.302915264542085e-05,
-   "faiss25_tflops": 45.35258892955856,
-   "faiss25_vs_flash_time": 1.861857945353561,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 20.329385302597075,
+   "faiss25_stock_s": 23.935548159199243,
+   "faiss25_stock_rel_mse": 9.927834279981035e-05,
+   "torch25_s": 20.184557686799963,
+   "torch25_rel_mse": 9.302915264542085e-05,
+   "faiss25_rel_mse": 0.00011529983749662872,
+   "faiss25_tflops": 45.029494688039335,
+   "faiss25_vs_flash_time": 1.8752170910610149,
    "emeans_to_lloyd_s": 0.5644663237707743,
    "emeans_T_upper": 3,
    "omeans_to_lloyd_s": 0.12108315618461768,
@@ -7453,8 +7917,8 @@
    "omeans_passes_equiv": 0.3485420766332586,
    "x_flash_omeans": 89.53420086168215,
    "x_flash_emeans": 19.20589975036753,
-   "x_faiss_omeans": 168.2951975408393,
-   "omeans_to_faiss_s": 0.11993543477021608,
+   "x_faiss_omeans": 169.88965021610124,
+   "omeans_to_faiss_s": 0.11966229418176978,
    "top_rel_lloyd": -0.007388770869788463,
    "top_seconds": 0.61142897680038,
    "top_time_ratio": 17.730732494118282,
@@ -7473,12 +7937,15 @@
    "flash25_s": 11.045184472800065,
    "flash25_mse": 0.5347838544679417,
    "flash25_tflops": 77.12911425364663,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 18.8001819298006,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 8.355314536953289e-05,
-   "faiss25_tflops": 45.31367293870839,
-   "faiss25_vs_flash_time": 1.7021157026483387,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 18.915840433600533,
+   "faiss25_stock_s": 22.21694595040026,
+   "faiss25_stock_rel_mse": -1.3990489804288743e-05,
+   "torch25_s": 18.8001819298006,
+   "torch25_rel_mse": 8.355314536953289e-05,
+   "faiss25_rel_mse": -6.093400021434021e-06,
+   "faiss25_tflops": 45.03660824088714,
+   "faiss25_vs_flash_time": 1.7125870989464043,
    "emeans_to_lloyd_s": 0.47614854049817484,
    "emeans_T_upper": 3,
    "omeans_to_lloyd_s": 0.1198514991287963,
@@ -7486,8 +7953,8 @@
    "omeans_passes_equiv": 0.35675727273791774,
    "x_flash_omeans": 92.15724920495614,
    "x_flash_emeans": 23.196930229469856,
-   "x_faiss_omeans": 157.725336188224,
-   "omeans_to_faiss_s": 0.119195700476207,
+   "x_faiss_omeans": 157.7641752577017,
+   "omeans_to_faiss_s": 0.11989946642006803,
    "top_rel_lloyd": -0.00851643807951298,
    "top_seconds": 0.5788442525998108,
    "top_time_ratio": 19.081444487341663,
@@ -7506,12 +7973,15 @@
    "flash25_s": 18.66842665639997,
    "flash25_mse": 116.776390309383,
    "flash25_tflops": 33.67328139621729,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 12.407525142799567,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 9.596740343748172e-05,
-   "faiss25_tflops": 50.66499376714218,
-   "faiss25_vs_flash_time": 0.6646261825468822,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 12.431559424602892,
+   "faiss25_stock_s": 15.272580368399213,
+   "faiss25_stock_rel_mse": 6.30223090681512e-05,
+   "torch25_s": 12.407525142799567,
+   "torch25_rel_mse": 9.596740343748172e-05,
+   "faiss25_rel_mse": 6.331262758764976e-05,
+   "faiss25_tflops": 50.5670417165448,
+   "faiss25_vs_flash_time": 0.6659136119722797,
    "emeans_to_lloyd_s": 0.3179244120359992,
    "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.0680773283346716,
@@ -7519,8 +7989,8 @@
    "omeans_passes_equiv": 0.2163365536541954,
    "x_flash_omeans": 274.22384387097327,
    "x_flash_emeans": 58.71970175818429,
-   "x_faiss_omeans": 182.83576547270948,
-   "omeans_to_faiss_s": 0.06786158665795367,
+   "x_faiss_omeans": 182.9921843483555,
+   "omeans_to_faiss_s": 0.06793492011078128,
    "top_rel_lloyd": -0.016577654314582302,
    "top_seconds": 0.41769145259895596,
    "top_time_ratio": 44.69429896216802,
@@ -7539,12 +8009,15 @@
    "flash25_s": 6.954811546799829,
    "flash25_mse": 0.4611017013931679,
    "flash25_tflops": 67.0102998597632,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 10.23352838659921,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": -0.0001507076429419958,
-   "faiss25_tflops": 45.54089162731829,
-   "faiss25_vs_flash_time": 1.471431442496532,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 10.293655742998817,
+   "faiss25_stock_s": 12.320617664001475,
+   "faiss25_stock_rel_mse": -0.00011538376050244584,
+   "torch25_s": 10.23352838659921,
+   "torch25_rel_mse": -0.0001507076429419958,
+   "faiss25_rel_mse": -0.00011890127472430231,
+   "faiss25_tflops": 45.27487793014427,
+   "faiss25_vs_flash_time": 1.4800768753734697,
    "emeans_to_lloyd_s": 0.20566509675217598,
    "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.04020089397510859,
@@ -7552,8 +8025,8 @@
    "omeans_passes_equiv": 0.16758042405292933,
    "x_flash_omeans": 173.00141512042188,
    "x_flash_emeans": 33.81619757863093,
-   "x_faiss_omeans": 253.32123504476183,
-   "omeans_to_faiss_s": 0.04039743602541234,
+   "x_faiss_omeans": 255.07203924884425,
+   "omeans_to_faiss_s": 0.04035587661161281,
    "top_rel_lloyd": -0.010983434799822597,
    "top_seconds": 0.28779629659984496,
    "top_time_ratio": 24.165743718620092,
@@ -7572,12 +8045,15 @@
    "flash25_s": 12.249042722599915,
    "flash25_mse": 0.594718358206455,
    "flash25_tflops": 24.692376308587313,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 5.737292737401003,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 3.0058337465047523e-05,
-   "faiss25_tflops": 52.71789085376418,
-   "faiss25_vs_flash_time": 0.46838702969134854,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 5.852101075199608,
+   "faiss25_stock_s": 9.252412125200498,
+   "faiss25_stock_rel_mse": 2.6697001148648422e-05,
+   "torch25_s": 5.737292737401003,
+   "torch25_rel_mse": 3.0058337465047523e-05,
+   "faiss25_rel_mse": 2.7070880877225552e-05,
+   "faiss25_tflops": 51.68365488562303,
+   "faiss25_vs_flash_time": 0.4777598713409886,
    "emeans_to_lloyd_s": 0.2724874722856937,
    "emeans_T_upper": 3,
    "omeans_to_lloyd_s": 0.0746960988769834,
@@ -7585,8 +8061,8 @@
    "omeans_passes_equiv": 0.44195089824720246,
    "x_flash_omeans": 163.98503947003707,
    "x_flash_emeans": 44.952682117279934,
-   "x_faiss_omeans": 77.0162174782621,
-   "omeans_to_faiss_s": 0.07449460549033532,
+   "x_faiss_omeans": 78.53629359500188,
+   "omeans_to_faiss_s": 0.07451460728943848,
    "top_rel_lloyd": -0.014220223329521574,
    "top_seconds": 0.5149125955998898,
    "top_time_ratio": 23.78858631012781,
@@ -7605,12 +8081,15 @@
    "flash25_s": 0.7703375441953539,
    "flash25_mse": 0.38776664670389843,
    "flash25_tflops": 102.08927319276088,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 4.352187068200147,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 6.32547896623656e-05,
-   "faiss25_tflops": 18.069811514908757,
-   "faiss25_vs_flash_time": 5.649714337558566,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 2.847488287599117,
+   "faiss25_stock_s": 3.375417645601556,
+   "faiss25_stock_rel_mse": 1.917662634439026e-05,
+   "torch25_s": 4.352187068200147,
+   "torch25_rel_mse": 6.32547896623656e-05,
+   "faiss25_rel_mse": -5.710379985861711e-05,
+   "faiss25_tflops": 27.61844547087098,
+   "faiss25_vs_flash_time": 3.696416342492334,
    "emeans_to_lloyd_s": 0.06380415237421752,
    "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.014108473531929603,
@@ -7618,8 +8097,8 @@
    "omeans_passes_equiv": 0.2682744080444336,
    "x_flash_omeans": 54.60105534818943,
    "x_flash_emeans": 12.073470386022054,
-   "x_faiss_omeans": 310.16716593755143,
-   "omeans_to_faiss_s": 0.014031746574608123,
+   "x_faiss_omeans": 200.8370898721903,
+   "omeans_to_faiss_s": 0.014178099719584744,
    "top_rel_lloyd": -0.006966124592452602,
    "top_seconds": 0.06825312700020732,
    "top_time_ratio": 11.2864798735597,
@@ -7638,12 +8117,15 @@
    "flash25_s": 0.9656890087993816,
    "flash25_mse": 0.19399294239440695,
    "flash25_tflops": 108.583197120952,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 4.4766401789995145,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 0.00032824884100632676,
-   "faiss25_tflops": 23.423280810439103,
-   "faiss25_vs_flash_time": 4.635695486029416,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 3.0041495692013997,
+   "faiss25_stock_s": 3.556194831398898,
+   "faiss25_stock_rel_mse": 0.0003032606138471267,
+   "torch25_s": 4.4766401789995145,
+   "torch25_rel_mse": 0.00032824884100632676,
+   "faiss25_rel_mse": 0.0002559267505964078,
+   "faiss25_tflops": 34.90425412735843,
+   "faiss25_vs_flash_time": 3.1108871922819006,
    "emeans_to_lloyd_s": 0.07064062449369725,
    "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.017743379866212654,
@@ -7651,8 +8133,8 @@
    "omeans_passes_equiv": 0.27097398248291016,
    "x_flash_omeans": 54.42531333267956,
    "x_flash_emeans": 13.67044835349018,
-   "x_faiss_omeans": 257.5477374283068,
-   "omeans_to_faiss_s": 0.01738178802772698,
+   "x_faiss_omeans": 172.05090425686302,
+   "omeans_to_faiss_s": 0.017460818251302888,
    "top_rel_lloyd": -0.005976280324256852,
    "top_seconds": 0.07973329039996316,
    "top_time_ratio": 12.111490745650048,
@@ -7671,12 +8153,15 @@
    "flash25_s": 3.308784159179777,
    "flash25_mse": 0.7089070659786877,
    "flash25_tflops": 58.058998265883055,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 6.386318290798954,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": -5.4345627224434455e-05,
-   "faiss25_tflops": 30.080663852406726,
-   "faiss25_vs_flash_time": 1.9301102711946236,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 5.810819551201712,
+   "faiss25_stock_s": 6.7575836797986994,
+   "faiss25_stock_rel_mse": -4.338580761221033e-05,
+   "torch25_s": 6.386318290798954,
+   "torch25_rel_mse": -5.4345627224434455e-05,
+   "faiss25_rel_mse": -6.580324613154323e-05,
+   "faiss25_tflops": 33.059827803510366,
+   "faiss25_vs_flash_time": 1.756179693704219,
    "emeans_to_lloyd_s": 0.11295306648877478,
    "emeans_T_upper": 1.5,
    "omeans_to_lloyd_s": 0.023882260553814105,
@@ -7684,8 +8169,8 @@
    "omeans_passes_equiv": 0.20030400267092358,
    "x_flash_omeans": 138.5456854774725,
    "x_flash_emeans": 29.293442507013324,
-   "x_faiss_omeans": 266.62679780778575,
-   "omeans_to_faiss_s": 0.023952274652463565,
+   "x_faiss_omeans": 242.45022591466827,
+   "omeans_to_faiss_s": 0.023967061813532246,
    "top_rel_lloyd": -0.01069405417964108,
    "top_seconds": 0.18862799599955907,
    "top_time_ratio": 17.541320638255158,
@@ -7704,12 +8189,15 @@
    "flash25_s": 10.79502969419118,
    "flash25_mse": 0.21873450404443764,
    "flash25_tflops": 77.20157689508257,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 18.22074682960083,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 0.00014554389494014327,
-   "faiss25_tflops": 45.73870230537952,
-   "faiss25_vs_flash_time": 1.6878829744586472,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 18.321981226999196,
+   "faiss25_stock_s": 21.593128956998406,
+   "faiss25_stock_rel_mse": 0.00018832169525565763,
+   "torch25_s": 18.22074682960083,
+   "torch25_rel_mse": 0.00014554389494014327,
+   "faiss25_rel_mse": 0.0001749948179216403,
+   "faiss25_tflops": 45.4859823670551,
+   "faiss25_vs_flash_time": 1.697260845596217,
    "emeans_to_lloyd_s": 0.5394190884305233,
    "emeans_T_upper": 3,
    "omeans_to_lloyd_s": 0.10742209809728274,
@@ -7717,8 +8205,8 @@
    "omeans_passes_equiv": 0.3413743063715593,
    "x_flash_omeans": 100.49170408508566,
    "x_flash_emeans": 20.012324231239308,
-   "x_faiss_omeans": 172.1475191596688,
-   "omeans_to_faiss_s": 0.10584379559197062,
+   "x_faiss_omeans": 173.62321142092645,
+   "omeans_to_faiss_s": 0.10552725685150462,
    "top_rel_lloyd": -0.006990053396708825,
    "top_seconds": 0.5505146026003785,
    "top_time_ratio": 19.60897974949331,
@@ -7737,12 +8225,15 @@
    "flash25_s": 6.914615687588229,
    "flash25_mse": 0.08185801749165722,
    "flash25_tflops": 67.39984234492618,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 10.12079887919972,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 0.00015730395320621076,
-   "faiss25_tflops": 46.04814429985505,
-   "faiss25_vs_flash_time": 1.4636820521155798,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 10.151347031199839,
+   "faiss25_stock_s": 12.205364112199458,
+   "faiss25_stock_rel_mse": 8.498608231870603e-05,
+   "torch25_s": 10.12079887919972,
+   "torch25_rel_mse": 0.00015730395320621076,
+   "faiss25_rel_mse": 0.00010341615834152906,
+   "faiss25_tflops": 45.90957296473352,
+   "faiss25_vs_flash_time": 1.4680999624348694,
    "emeans_to_lloyd_s": 0.23819261641594158,
    "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.054458737576560855,
@@ -7750,8 +8241,8 @@
    "omeans_passes_equiv": 0.22825063855509994,
    "x_flash_omeans": 126.96981228893365,
    "x_flash_emeans": 29.029513137861702,
-   "x_faiss_omeans": 186.9801648548217,
-   "omeans_to_faiss_s": 0.05412766047702376,
+   "x_faiss_omeans": 187.15316789077087,
+   "omeans_to_faiss_s": 0.05424085066582746,
    "top_rel_lloyd": -0.01193701817282939,
    "top_seconds": 0.29690722039922546,
    "top_time_ratio": 23.288809474861353,
@@ -7770,12 +8261,15 @@
    "flash25_s": 31.16676457598881,
    "flash25_mse": 0.3405908076584802,
    "flash25_tflops": 100.93213212203298,
-   "faiss25_impl": null,
-   "faiss25_s": null,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 119.57140262733446,
    "faiss25_stock_s": null,
-   "faiss25_rel_mse": null,
-   "faiss25_tflops": null,
-   "faiss25_vs_flash_time": null,
+   "faiss25_stock_rel_mse": null,
+   "torch25_s": null,
+   "torch25_rel_mse": null,
+   "faiss25_rel_mse": 0.00019550498753235612,
+   "faiss25_tflops": 26.308364131214724,
+   "faiss25_vs_flash_time": 3.8365035400387204,
    "emeans_to_lloyd_s": 2.3861396282903353,
    "emeans_T_upper": 3,
    "omeans_to_lloyd_s": 0.2438072883747283,
@@ -7783,8 +8277,8 @@
    "omeans_passes_equiv": 0.09143219810841878,
    "x_flash_omeans": 127.83360490883251,
    "x_flash_emeans": 13.061584580580366,
-   "x_faiss_omeans": null,
-   "omeans_to_faiss_s": null,
+   "x_faiss_omeans": 497.179775217574,
+   "omeans_to_faiss_s": 0.24049932959362247,
    "top_rel_lloyd": -0.006120503761940807,
    "top_seconds": 1.4361099386666563,
    "top_time_ratio": 21.70221355401615,
@@ -7803,12 +8297,15 @@
    "flash25_s": 38.72595791899994,
    "flash25_mse": 0.1936413714397356,
    "flash25_tflops": 108.30730149459177,
-   "faiss25_impl": null,
-   "faiss25_s": null,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 128.25877280566783,
    "faiss25_stock_s": null,
-   "faiss25_rel_mse": null,
-   "faiss25_tflops": null,
-   "faiss25_vs_flash_time": null,
+   "faiss25_stock_rel_mse": null,
+   "torch25_s": null,
+   "torch25_rel_mse": null,
+   "faiss25_rel_mse": 0.00035359721390096387,
+   "faiss25_tflops": 32.701887818270556,
+   "faiss25_vs_flash_time": 3.311958688638166,
    "emeans_to_lloyd_s": 2.04555327977447,
    "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.2729979140813844,
@@ -7816,8 +8313,8 @@
    "omeans_passes_equiv": 0.09306751748860677,
    "x_flash_omeans": 141.85440958151497,
    "x_flash_emeans": 18.931776699196813,
-   "x_faiss_omeans": null,
-   "omeans_to_faiss_s": null,
+   "x_faiss_omeans": 487.7828354261506,
+   "omeans_to_faiss_s": 0.26294236592727743,
    "top_rel_lloyd": -0.00342234830035752,
    "top_seconds": 1.6978227733331248,
    "top_time_ratio": 22.809187464822415,
@@ -7836,12 +8333,15 @@
    "flash25_s": 2.323687854799755,
    "flash25_mse": 0.24670353342783063,
    "flash25_tflops": 64.3482555410978,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 3.2868211044005875,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 1.951490153890179e-05,
-   "faiss25_tflops": 45.49236332887326,
-   "faiss25_vs_flash_time": 1.4144847801357687,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 2.8459445273998427,
+   "faiss25_stock_s": 3.996015225800511,
+   "faiss25_stock_rel_mse": 4.4499499368017695e-06,
+   "torch25_s": 3.2868211044005875,
+   "torch25_rel_mse": 1.951490153890179e-05,
+   "faiss25_rel_mse": 2.1635599843990416e-05,
+   "faiss25_tflops": 52.53976612643664,
+   "faiss25_vs_flash_time": 1.2247533684532226,
    "emeans_to_lloyd_s": 0.07633301148645819,
    "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.029269364560342702,
@@ -7849,8 +8349,8 @@
    "omeans_passes_equiv": 0.40334596404063683,
    "x_flash_omeans": 79.38976092252233,
    "x_flash_emeans": 30.441453960086292,
-   "x_faiss_omeans": 112.36567063498957,
-   "omeans_to_faiss_s": 0.029251114560402965,
+   "x_faiss_omeans": 97.3001361841287,
+   "omeans_to_faiss_s": 0.029249132005470555,
    "top_rel_lloyd": -0.019493895351796065,
    "top_seconds": 0.15393139400002837,
    "top_time_ratio": 15.095607168991966,
@@ -7869,12 +8369,15 @@
    "flash25_s": 6.516486237199933,
    "flash25_mse": 0.20966134648578838,
    "flash25_tflops": 23.377058874086924,
-   "faiss25_impl": "pytorch-lloyd-fp32",
-   "faiss25_s": 2.7115373927998005,
-   "faiss25_stock_s": null,
-   "faiss25_rel_mse": 0.00014147750039992534,
-   "faiss25_tflops": 56.180778780227335,
-   "faiss25_vs_flash_time": 0.4161042153853946,
+   "faiss25_impl": "faiss-gpu-1.14.3",
+   "faiss25_s": 2.658008646199596,
+   "faiss25_stock_s": 4.212701691998518,
+   "faiss25_stock_rel_mse": 0.0001584671465008097,
+   "torch25_s": 2.7115373927998005,
+   "torch25_rel_mse": 0.00014147750039992534,
+   "faiss25_rel_mse": 0.00014873202848521326,
+   "faiss25_tflops": 57.31218468269825,
+   "faiss25_vs_flash_time": 0.4078898580382355,
    "emeans_to_lloyd_s": 0.12784943920014485,
    "emeans_T_upper": 1.5,
    "omeans_to_lloyd_s": 0.029588189568410146,
@@ -7882,8 +8385,8 @@
    "omeans_passes_equiv": 0.22076478321569776,
    "x_flash_omeans": 220.23943783830777,
    "x_flash_emeans": 50.97000251208415,
-   "x_faiss_omeans": 91.89616425766506,
-   "omeans_to_faiss_s": 0.029506535062736646,
+   "x_faiss_omeans": 90.09479828448531,
+   "omeans_to_faiss_s": 0.029502354151530588,
    "top_rel_lloyd": -0.011838633567656912,
    "top_seconds": 0.19504257299959135,
    "top_time_ratio": 33.410583838091526,
@@ -8187,46 +8690,88 @@
    "source": "blog/analysis.py over agg_test_r4c.json cells (data-spec §5)"
   },
   "faiss_s_min": {
-   "value": 4.410236098799942,
-   "text": "4.41",
+   "value": 3.0949045566027054,
+   "text": "3.09",
    "definition": "min faiss25_s over all 8 test sets (baseline time, 3 s.f., rounded down)",
-   "source": "M1 fallback: a plain PyTorch Lloyd in single precision (impl pytorch-lloyd-fp32; faiss's contrib k-means loop with a torch.addmm/argmin float32 assignment, TF32 off; data resident; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py -> blog/data/lloyd25fp32/, pooled over the suite's seeds; NOT faiss"
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
   },
   "faiss_s_max": {
-   "value": 174.9492952319985,
-   "text": "174",
+   "value": 122.98885820433013,
+   "text": "122",
    "definition": "max faiss25_s over all 8 test sets",
-   "source": "M1 fallback: a plain PyTorch Lloyd in single precision (impl pytorch-lloyd-fp32; faiss's contrib k-means loop with a torch.addmm/argmin float32 assignment, TF32 off; data resident; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py -> blog/data/lloyd25fp32/, pooled over the suite's seeds; NOT faiss"
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
   },
   "faiss_vs_flash_mse_max": {
-   "value": 0.015070764294199578,
+   "value": 0.01189012747243023,
    "text": "0.02",
    "definition": "max |faiss25_rel_mse| in percent over all 8 test sets (rounded up so \"within\" holds)",
-   "source": "M1 fallback: a plain PyTorch Lloyd in single precision (impl pytorch-lloyd-fp32; faiss's contrib k-means loop with a torch.addmm/argmin float32 assignment, TF32 off; data resident; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py -> blog/data/lloyd25fp32/, pooled over the suite's seeds; NOT faiss"
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
   },
   "x_faiss_min": {
-   "value": 77.0162174782621,
-   "text": "77",
+   "value": 78.53629359500188,
+   "text": "78",
    "definition": "min x_faiss_omeans over all 8 test sets",
-   "source": "M1 fallback: a plain PyTorch Lloyd in single precision (impl pytorch-lloyd-fp32; faiss's contrib k-means loop with a torch.addmm/argmin float32 assignment, TF32 off; data resident; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py -> blog/data/lloyd25fp32/, pooled over the suite's seeds; NOT faiss"
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
   },
   "x_faiss_max": {
-   "value": 478.3990679892769,
-   "text": "478",
+   "value": 337.7088792675689,
+   "text": "337",
    "definition": "max x_faiss_omeans over all 8 test sets",
-   "source": "M1 fallback: a plain PyTorch Lloyd in single precision (impl pytorch-lloyd-fp32; faiss's contrib k-means loop with a torch.addmm/argmin float32 assignment, TF32 off; data resident; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py -> blog/data/lloyd25fp32/, pooled over the suite's seeds; NOT faiss"
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
   },
   "x_faiss_geomean": {
-   "value": 198.79407983140672,
-   "text": "198",
+   "value": 181.8373389406118,
+   "text": "181",
    "definition": "geomean x_faiss_omeans over all 8 test sets",
-   "source": "M1 fallback: a plain PyTorch Lloyd in single precision (impl pytorch-lloyd-fp32; faiss's contrib k-means loop with a torch.addmm/argmin float32 assignment, TF32 off; data resident; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py -> blog/data/lloyd25fp32/, pooled over the suite's seeds; NOT faiss"
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
   },
-  "faiss_stock_overhead": {
-   "value": null,
-   "text": null,
-   "definition": "not measured: the data-spec §4.1 fallback has no 'stock' arm (no faiss GPU build ran on the RTX 5090); drop the sentence",
-   "source": "M1 fallback: a plain PyTorch Lloyd in single precision (impl pytorch-lloyd-fp32; faiss's contrib k-means loop with a torch.addmm/argmin float32 assignment, TF32 off; data resident; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py -> blog/data/lloyd25fp32/, pooled over the suite's seeds; NOT faiss"
+  "faiss_slower_n": {
+   "value": 6,
+   "text": "6",
+   "definition": "number of test sets where faiss25_s > flash25_s, over all 8 test sets",
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
+  },
+  "faiss_vs_flash_time_min": {
+   "value": 0.4777598713409886,
+   "text": "0.4",
+   "definition": "min faiss25_s / flash25_s over all 8 test sets (rounded down)",
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
+  },
+  "faiss_vs_flash_time_max": {
+   "value": 2.3829776045109914,
+   "text": "2.4",
+   "definition": "max faiss25_s / flash25_s over all 8 test sets (rounded up)",
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
+  },
+  "faiss_tflops_min": {
+   "value": 26.469313835617616,
+   "text": "26",
+   "definition": "min faiss25_tflops over all 8 test sets (rounded down)",
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
+  },
+  "faiss_tflops_max": {
+   "value": 51.68365488562303,
+   "text": "52",
+   "definition": "max faiss25_tflops over all 8 test sets (rounded up)",
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
+  },
+  "faiss_stock_n": {
+   "value": 7,
+   "text": "7",
+   "definition": "test sets with a stock arm (up to 2M rows)",
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
+  },
+  "faiss_stock_extra_min": {
+   "value": 17.33811046449729,
+   "text": "17",
+   "definition": "min of 100 * (faiss25_stock_s / faiss25_s - 1) over the 7 test sets with a stock arm (faiss.Kmeans(gpu=True) on host arrays), percent",
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
+  },
+  "faiss_stock_extra_max": {
+   "value": 58.10410665001904,
+   "text": "58",
+   "definition": "max of the same",
+   "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
   }
  }
 }
