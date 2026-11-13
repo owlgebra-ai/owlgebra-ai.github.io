@@ -1,0 +1,112 @@
+/* RexRerankers post: rules this page needs on top of ../../css/post.css. */
+
+/* The abstract carries a heading but no section number. */
+.post h2#tldr { margin-top: 0.5rem; }
+
+/* Fourth-level headings (Phase 1 parts, usage variants) */
+.post h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 1.75rem auto 0.6rem;
+}
+.post h3 + h4 { margin-top: 1rem; }
+.post h2 + h3 { margin-top: 0; }
+
+.post blockquote {
+  border-left: 3px solid var(--gray-200);
+  padding: 0.1rem 0 0.1rem 1.1rem;
+  margin-bottom: 1.25rem;
+  color: var(--gray-600);
+}
+.post blockquote p { margin-bottom: 0; }
+.post blockquote b { color: var(--black); font-weight: 600; }
+
+/* Display equations: native MathML, scrolls sideways if a phone is too narrow */
+.eq {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.35rem 0;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+.eq math {
+  font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", math;
+  font-size: 1.15em;
+}
+
+/* Images carried over from the original article */
+.fig img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 4px;
+}
+.fig--portrait img { max-width: min(100%, 460px); }
+.fig--table img { max-width: min(100%, 860px); }
+.fig-scroll:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; }
+@media (max-width: 700px) {
+  /* the results table is an image: let it scroll, not shrink to nothing */
+  .fig-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .fig--table .fig-scroll img { width: 680px; max-width: none; }
+}
+
+/* Table 1: model names may wrap on phones; the starred row is the best model */
+#table-1 th[scope="row"] { white-space: normal; min-width: 9.5rem; }
+#table-1 .star { margin-right: 0.15em; }
+
+.post pre { -webkit-overflow-scrolling: touch; tab-size: 4; }
+
+.post-origin {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  border-top: 1px solid var(--border);
+  padding-top: 1.25rem;
+  margin-top: 3rem;
+  margin-bottom: 0;
+}
+
+/* ── Cover: the weave (cover.js takes over the static scene) ─── */
+.rk-s { fill: none; stroke: var(--black); }
+.rk-seam, .rk-caps { visibility: hidden; }
+.post-cover.is-steered .rk-seam, .post-cover.has-follow .rk-caps { visibility: visible; }
+.post-cover.is-live svg.rk-cover { touch-action: pan-y; }
+/* the svg itself takes the pointer; the seam under the cursor must not steal it */
+.rk-cover * { pointer-events: none; }
+
+/* ── Created figures ─────────────────────────────────────────── */
+.rr-sub { font-size: 8px; }
+.rr-bar { fill: var(--black); }
+.rr-s-mark { fill: var(--black); }
+.rr-soft .fig2__panel p { padding-left: 0; }
+@media (max-width: 720px) {
+  .rr-soft .fig2__grid { max-width: 290px; gap: 1.75rem; }
+}
+
+/* Figure 4: dot plot, nDCG@5 filled, nDCG@10 open */
+.rr-link { stroke-width: 1.25; }
+.rr-link--rex { stroke: var(--black); }
+.rr-link--other { stroke: var(--gray-400); }
+.rr-m5 { fill: var(--gray-600); stroke: var(--white); stroke-width: 1.25; }
+.rr-m10 { fill: var(--white); stroke-width: 1.5; }
+.rr-m10--rex { stroke: var(--black); }
+.rr-m10--other { stroke: var(--gray-600); }
+.fig svg text.rr-val--other { fill: var(--gray-600); font-weight: 500; }
+.fig svg text.rr-rex { font-weight: 600; }
+
+/* Figure 7: metric switch without JavaScript, as in the o-means figures */
+.rr-tiers .fig1__controls { margin-bottom: 0.75rem; }
+#rrcx-5:checked ~ .fig1__controls label[for="rrcx-5"],
+#rrcx-10:checked ~ .fig1__controls label[for="rrcx-10"] { background: var(--black); color: var(--white); }
+#rrcx-5:focus-visible ~ .fig1__controls label[for="rrcx-5"],
+#rrcx-10:focus-visible ~ .fig1__controls label[for="rrcx-10"] { outline: 2px solid var(--black); outline-offset: 2px; }
+#rrcx-5:checked ~ .rr-view--10,
+#rrcx-10:checked ~ .rr-view--5 { display: none; }
+.rr-tiers .g-label.rr-group { font-size: 11px; font-weight: 600; fill: var(--gray-600); letter-spacing: 0.02em; }
+.rr-tiers .row-label { font-size: 11.5px; }
+@media (max-width: 600px) {
+  .rr-gen .fig-narrow .row-label { font-size: 13px; }
+  .rr-gen .fig-narrow .v-sub { font-size: 11.5px; }
+  .rr-tiers .fig-narrow .row-label { font-size: 11px; }
+}
