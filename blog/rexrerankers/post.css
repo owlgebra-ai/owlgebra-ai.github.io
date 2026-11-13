@@ -43,7 +43,6 @@
   margin: 0 auto;
   border-radius: 4px;
 }
-.fig--portrait img { max-width: min(100%, 460px); }
 .fig--table img { max-width: min(100%, 860px); }
 .fig-scroll:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; }
 @media (max-width: 700px) {
@@ -67,13 +66,12 @@
   margin-bottom: 0;
 }
 
-/* ── Cover: the weave (cover.js takes over the static scene) ─── */
-.rk-s { fill: none; stroke: var(--black); }
-.rk-seam, .rk-caps { visibility: hidden; }
-.post-cover.is-steered .rk-seam, .post-cover.has-follow .rk-caps { visibility: visible; }
-.post-cover.is-live svg.rk-cover { touch-action: pan-y; }
-/* the svg itself takes the pointer; the seam under the cursor must not steal it */
-.rk-cover * { pointer-events: none; }
+/* ── Cover: the line-up (cover.js takes over the static scene) ─ */
+.ln-base { stroke: var(--gray-200); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ln-bracket { fill: none; stroke: var(--gray-600); stroke-width: 1; vector-effect: non-scaling-stroke; }
+/* the bars move under the pointer; the svg alone takes pointer events */
+.ln-cover * { pointer-events: none; }
+.post-cover.is-live svg.ln-cover { cursor: ew-resize; touch-action: pan-y; }
 
 /* ── Created figures ─────────────────────────────────────────── */
 .rr-sub { font-size: 8px; }
@@ -109,4 +107,84 @@
   .rr-gen .fig-narrow .row-label { font-size: 13px; }
   .rr-gen .fig-narrow .v-sub { font-size: 11.5px; }
   .rr-tiers .fig-narrow .row-label { font-size: 11px; }
+}
+
+/* Figure 1: the pipeline, drawn in the page's ink */
+.rr-pipeline .fig-wide svg { max-width: 720px; margin: 0 auto; }
+.rr-dg-group { fill: var(--gray-50); stroke: var(--gray-200); stroke-width: 1; }
+.fig svg text.rr-dg-glabel { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; fill: var(--gray-600); }
+.rr-dg-edge { fill: none; stroke: var(--gray-600); stroke-width: 1; }
+.rr-dg-head { fill: var(--gray-600); }
+.rr-dg-node rect { fill: var(--white); stroke: var(--gray-400); stroke-width: 1; }
+.rr-dg-node text { font-size: 12px; }
+.rr-dg-node--index rect { fill: var(--gray-100); stroke: var(--black); stroke-width: 1.5; }
+.rr-dg-node--index text { font-weight: 600; }
+.rr-dg-node--dataset rect { fill: var(--black); stroke: var(--black); }
+.fig svg .rr-dg-node--dataset text { fill: var(--white); font-weight: 600; }
+.rr-dg--n .rr-dg-node text { font-size: 10.5px; }
+.fig .rr-dg--n text.rr-dg-glabel { font-size: 9px; letter-spacing: 0.1em; }
+
+/* Figure 5: radar, the one figure in colour (radar.js adds the controls) */
+.rr-rd-legend {
+  list-style: none; padding: 0; margin: 0 0 0.75rem;
+  display: flex; flex-wrap: wrap; gap: 0.35rem 1rem;
+  font-size: 0.8rem; line-height: 1.4;
+}
+.rr-rd-li { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--black); }
+.rr-rd-li--rex { font-weight: 600; }
+.fig .rr-rd-legend svg { display: inline-block; width: 26px; height: 14px; flex: none; overflow: visible; }
+.rr-rd-sw { fill: none; stroke: var(--c); stroke-width: 2; }
+.rr-rd-mk { fill: var(--c); stroke: var(--white); stroke-width: 1; }
+.rr-rd-legend.is-live { gap: 0.35rem 0.4rem; }
+.rr-rd-btn {
+  font: inherit; color: var(--black); background: var(--white); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.25rem 0.6rem 0.25rem 0.4rem;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+}
+.rr-rd-btn:hover { border-color: var(--gray-400); }
+.rr-rd-btn[aria-pressed="false"] { color: var(--gray-400); border-style: dashed; }
+.rr-rd-btn[aria-pressed="false"] svg { opacity: 0.3; }
+.rr-rd-btn[aria-pressed="false"] span { text-decoration: line-through; }
+.rr-rd-btn:focus-visible, .rr-rd-mode button:focus-visible, .rr-rd-svg:focus-visible {
+  outline: 2px solid var(--black); outline-offset: 2px;
+}
+.rr-rd-svg:focus { outline: none; }
+.rr-rd-svg:focus-visible { outline-offset: 4px; border-radius: 4px; }
+.rr-rd-top { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-bottom: 0.6rem; font-size: 0.8rem; color: var(--gray-600); }
+.rr-rd-mode button {
+  font: inherit; font-size: 0.8rem; font-weight: 500; color: var(--gray-600);
+  background: var(--white); border: 0; padding: 0.3rem 0.8rem; cursor: pointer;
+}
+.rr-rd-mode button + button { border-left: 1px solid var(--border-strong); }
+.rr-rd-mode button[aria-pressed="true"] { background: var(--black); color: var(--white); }
+.rr-radar .fig-wide svg { max-width: 720px; margin: 0 auto; }
+.rr-rd-grid circle { fill: none; stroke: var(--gray-200); stroke-width: 1; }
+.rr-rd-grid line { stroke: var(--gray-200); stroke-width: 1; }
+.fig svg text.rr-rd-axis { font-size: 12px; font-weight: 600; }
+.fig svg text.rr-rd-ring {
+  font-size: 10px; fill: var(--gray-600); font-variant-numeric: tabular-nums;
+  paint-order: stroke; stroke: var(--white); stroke-width: 3px; stroke-linejoin: round;
+}
+.rr-rd-poly { fill: var(--c); fill-opacity: 0.05; stroke: var(--c); stroke-width: 1.5; stroke-linejoin: round; pointer-events: none; }
+.rr-rd-m--rex .rr-rd-poly { stroke-width: 2.75; fill-opacity: 0.1; }
+.rr-rd-hit { fill: none; stroke: transparent; stroke-width: 12; pointer-events: stroke; }
+.rr-rd-vhit { fill: transparent; }
+.rr-rd-m { transition: opacity 0.2s; }
+.rr-rd-svg.has-emph .rr-rd-m { opacity: 0.12; }
+.rr-rd-svg.has-emph .rr-rd-m.is-emph { opacity: 1; }
+.rr-rd-m.is-emph .rr-rd-poly { stroke-width: 3; fill-opacity: 0.14; }
+.rr-rd-m.is-off { display: none; }
+.rr-rd-focus { fill: none; stroke: var(--black); stroke-width: 1.5; visibility: hidden; pointer-events: none; }
+.rr-rd-svg.has-focus .rr-rd-focus { visibility: visible; }
+.rr-rd-readout {
+  min-height: 2.2em; font-size: 0.85rem; line-height: 1.5;
+  margin: 0.5rem 0 0 !important; padding: 0.4rem 0.7rem;
+  background: var(--gray-50); border-radius: var(--radius-sm);
+}
+.rr-rd-readout.is-empty { color: var(--gray-600); }
+.rr-rd-readout b { font-weight: 600; }
+.fig .rr-rd-svg--n text.rr-rd-axis { font-size: 11px; }
+@media (prefers-reduced-motion: reduce) {
+  .rr-rd-m { transition: none; }
 }
