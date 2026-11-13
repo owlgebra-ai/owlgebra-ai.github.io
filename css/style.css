@@ -718,6 +718,20 @@ button { cursor: pointer; font-family: inherit; }
 
 /* ── RESPONSIVE ──────────────────────────────────────────────── */
 
+/* Four cards: four per row on wide screens, two per row below that */
+@media (min-width: 1200px) {
+  .research__grid,
+  .blog__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .research__grid,
+  .blog__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* Tablet: 768px–1023px */
 @media (max-width: 1023px) {
   :root { --section-pad: 80px 0; }
