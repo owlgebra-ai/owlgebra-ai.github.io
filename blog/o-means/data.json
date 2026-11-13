@@ -1,7 +1,7 @@
 {
  "meta": {
-  "generated": "2026-11-13T00:14:47+00:00",
-  "git_sha": "0e6a32066091f3f7e3ed774084b2716955b7039e",
+  "generated": "2026-11-13T02:04:40+00:00",
+  "git_sha": "42206b60c382e48bde8177d3b2fe22cf5941cfe5",
   "protocol": "v1",
   "gpu": "NVIDIA GeForce RTX 5090",
   "baseline2": {
@@ -8055,7 +8055,7 @@
    "faiss25_tflops": 51.68365488562303,
    "faiss25_vs_flash_time": 0.4777598713409886,
    "emeans_to_lloyd_s": 0.2724874722856937,
-   "emeans_T_upper": 3,
+   "emeans_T_upper": 2,
    "omeans_to_lloyd_s": 0.0746960988769834,
    "omeans_effort_upper": 2.0,
    "omeans_passes_equiv": 0.44195089824720246,
@@ -8697,8 +8697,8 @@
   },
   "faiss_s_max": {
    "value": 122.98885820433013,
-   "text": "122",
-   "definition": "max faiss25_s over all 8 test sets",
+   "text": "123",
+   "definition": "max faiss25_s over all 8 test sets (nearest second)",
    "source": "M1: faiss GPU k-means (faiss-gpu-1.14.3, conda-forge build; faiss's contrib k-means loop with faiss.knn_gpu assignment on resident float32 tensors; 25 iterations; same start; timed as the Flash anchors), blog/measure_kmeans.py --impl faiss -> blog/data/faiss25/, pooled over the suite's seeds"
   },
   "faiss_vs_flash_mse_max": {
