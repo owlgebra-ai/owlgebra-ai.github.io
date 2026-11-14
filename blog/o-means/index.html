@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>o-means: index the centroids, don’t scan them · Owlgebra AI</title>
-  <meta name="description" content="Large-k k-means on a GPU that reaches e-means’ error in a quarter of the time. On eight datasets and one RTX 5090, o-means reaches the clustering error of e-means in 22% of e-means’ time." />
+  <meta name="description" content="o-means is a GPU k-means algorithm for large k. It reaches the clustering error of e-means in 22% of e-means’ time, and the error of 25 Lloyd iterations more than 100 times sooner than Flash-KMeans or faiss GPU." />
   
   <link rel="canonical" href="https://owlgebra.ai/blog/o-means/" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Owlgebra AI" />
   <meta property="og:title" content="o-means: index the centroids, don’t scan them" />
-  <meta property="og:description" content="Large-k k-means on a GPU that reaches e-means’ error in a quarter of the time. On eight datasets and one RTX 5090, o-means reaches the clustering error of e-means in 22% of e-means’ time." />
+  <meta property="og:description" content="o-means is a GPU k-means algorithm for large k. It reaches the clustering error of e-means in 22% of e-means’ time, and the error of 25 Lloyd iterations more than 100 times sooner than Flash-KMeans or faiss GPU." />
   <meta property="og:url" content="https://owlgebra.ai/blog/o-means/" />
   <meta property="og:image" content="https://owlgebra.ai/assets/logo.png" />
   <meta property="article:published_time" content="2026-11-12" />
@@ -47,7 +47,6 @@
     
     <header class="post__header post__header--lead">
       <h1 class="post__title">o-means: index the centroids, don’t scan them</h1>
-      <p class="post__dek">Large-k k-means on a GPU that reaches e-means’ error in a quarter of the time.</p>
       <p class="post__date">Nov 12, 2026</p>
       <p class="post__byline">Rahul Bajaj, Jaya Nupur, Anuj Garg</p>
     </header>
@@ -59,34 +58,28 @@
       <a href="o-means.pdf">Paper (PDF)</a>
     </nav>
 
-    <p>o-means is a GPU k-means algorithm for large <i>k</i>: millions of vectors clustered into tens of thousands of centroids, the job that builds an IVF index or a vector-quantisation codebook. It builds on <a href="https://arxiv.org/abs/2611.09501">e-means</a>, the mini-batch method Meta FAIR published on 6 November 2026, and removes the cost that e-means leaves in place: comparing every point with every centroid.</p>
+    <p>o-means is a GPU k-means algorithm for large <i>k</i>: millions of vectors clustered into tens of thousands of centroids, the job that builds an IVF index or a vector-quantisation codebook. o-means reaches the clustering error of <a href="https://arxiv.org/abs/2611.09501">e-means</a> in 22% of e-means’ time. It reaches the error of 25 Lloyd iterations more than 100 times sooner than Flash-KMeans or faiss GPU.</p>
 
-    <p>On eight datasets and one RTX 5090, o-means reaches the clustering error of e-means in 22% of e-means’ time. It reaches the error of 25 Lloyd iterations more than 100 times sooner than Flash-KMeans or faiss GPU.</p>
+    <p>o-means takes the same arguments as e-means and has the same single knob, the number of epochs. It ships as a contrib package in our <a href="https://github.com/owlgebra-ai/faiss/tree/main/contrib/o_means">fork of faiss</a> under the MIT licence.</p>
 
     <div class="section-label" aria-hidden="true">01</div>
     <h2 id="what-is-new">What is new</h2>
 
     <ol>
-      <li><b>Two-level assignment inside mini-batch k-means.</b> The centroids are grouped into cells of about 128. Each point is compared with the cell centres, then only with the centroids in its nearest cells. At equal error, o-means performs about 7 times fewer distance computations than e-means.</li>
-      <li><b>A cell index that stays accurate while the centroids move.</b> Centroids shift after every batch, and thousands are split during the first epoch, so a static index goes stale within a few batches. o-means refreshes the index every five batches during the first epoch, rebuilds it every half epoch afterwards, and keeps a pointer from every split centroid to its child. On typical data the share of points that miss their nearest centroid falls from 10–28% to 0.5–2.4%.</li>
-      <li><b>A GPU layout that turns fewer comparisons into less time.</b> The centroid table is stored sorted by cell, so each cell is a contiguous block that runs as a small dense matrix product. A batch takes three kernel launches and never returns to the host.</li>
-      <li><b>A recency-weighted finish for short runs.</b> For fits shorter than two epochs, the closing average gives recent batches more weight. This lowers the error of a one-epoch fit by 0.34–0.70%.</li>
-      <li><b>Fused half-precision kernels for the RTX 5090.</b> This is an implementation gain and we report it separately: about 1.4× comes from the kernels and about 3.1× from the algorithm.</li>
+      <li><b>Two-level IVF assignment over the centroids.</b> The <i>k</i> centroids are partitioned into <code>nlist</code> ≈ <i>k</i>/128 cells by a small k-means over the centroids. Each point is scored against the <code>nlist</code> cell centres, then only against the centroids of its <code>nprobe</code> nearest cells, so one assignment costs <code>nlist</code> + <code>nprobe</code> × 128 distance computations instead of <i>k</i>. At equal error, o-means performs about 7 times fewer distance computations than e-means.</li>
+      <li><b>Online index maintenance under centroid drift.</b> Centroids shift after every batch, and thousands are split during the first epoch, so a static index goes stale within a few batches. o-means bounds the staleness with three mechanisms: an incremental refresh every five batches during the first epoch, which re-files the centroids under the existing cell centres; a full rebuild of the cell centres every half epoch afterwards; and a split pointer from every split centroid to its child, which the search follows. On typical data the miss rate, the share of points that are not assigned to their nearest centroid, falls from 10–28% to 0.5–2.4%.</li>
+      <li><b>Cell-contiguous centroid layout with bucketed dense kernels.</b> The centroid table is stored sorted by cell, so each cell is a contiguous block. Point–cell pairs are bucketed by cell, and each bucket runs as a small dense matrix product on tensor cores. A batch takes three kernel launches (coarse scoring and bucketing, per-cell products, reduction) and never returns to the host.</li>
+      <li><b>Exponentially recency-weighted closing mean.</b> For fits shorter than two epochs, the closing average weights each batch by its recency, with a time constant of one epoch. This lowers the error of a one-epoch fit by 0.34–0.70%.</li>
+      <li><b>Fused FP16 distance and arg-min kernels for the RTX 5090.</b> This is an implementation gain and we report it separately: about 1.4× comes from the kernels and about 3.1× from the algorithm.</li>
     </ol>
 
     <div class="section-label" aria-hidden="true">02</div>
     <h2 id="results-at-a-glance">Results at a glance</h2>
 
     <ul class="highlights">
-      <li><b>Same error in 22% of the time.</b> o-means is 4.49× faster than e-means at equal error in the geometric mean, and between 2.54× and 7.25× on individual datasets and targets.</li>
-      <li><b>Lower error in the same time.</b> At the moment e-means finishes one epoch, o-means’ error is 2.0–3.9% lower.</li>
-      <li><b>25 Lloyd iterations matched with less than half a pass of arithmetic.</b> Lloyd spends 25 passes of distance computations, e-means 2 to 3, and o-means 0.15 to 0.45.</li>
-      <li><b>More than 100× sooner than GPU Lloyd libraries.</b> o-means reaches the error of 25 Lloyd iterations in 0.020–0.37 s, where Flash-KMeans and faiss GPU take 1.35–123 s. The geometric-mean factor is 126× against Flash-KMeans and 181× against faiss GPU.</li>
-      <li><b>Evaluated under a locked protocol.</b> The acceptance criteria were written down before any run was scored. The eight evaluation datasets were run once, on the release commit, and o-means won all 114 paired comparisons with e-means.</li>
-      <li><b>Drop-in and open source.</b> o-means takes the same arguments as e-means and has the same single knob, the number of epochs. It ships as a contrib package in our fork of faiss under the MIT licence. Peak GPU memory in the test runs was 7.5 GB, data included.</li>
+      <li><b>Equal-error speed-up of 4.49× over e-means.</b> In the geometric mean o-means reaches e-means’ error in 22% of e-means’ time, and it is between 2.54× and 7.25× faster on individual datasets and targets.</li>
+      <li><b>Equal-time error, distance-computation budget and wall-clock time against Lloyd.</b> At the moment e-means finishes one epoch, o-means’ error is 2.0–3.9% lower. To match the error of 25 Lloyd iterations, Lloyd spends 25 passes of distance computations, e-means 2 to 3, and o-means 0.15 to 0.45. In wall-clock time o-means reaches that error in 0.020–0.37 s, where Flash-KMeans and faiss GPU take 1.35–123 s. The geometric-mean factor is 126× against Flash-KMeans and 181× against faiss GPU.</li>
     </ul>
-
-    <p>All timings are from one RTX 5090. All reported errors are exact and measured on held-out rows. <a href="#limitations">Limitations</a> lists what we have not tested.</p>
 
     <div class="section-label" aria-hidden="true">03</div>
     <h2 id="background">Background</h2>
