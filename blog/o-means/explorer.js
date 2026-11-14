@@ -158,9 +158,12 @@
     var readout = htmlEl('p', { 'class': 'ex-readout', id: 'ex-readout', 'aria-live': 'polite' }, null, fig);
     var notes = htmlEl('div', { 'class': 'ex-notes' }, null, fig);
     var cap = htmlEl('figcaption', {}, null, fig);
-    var label = fallback.querySelector('figcaption b');
-    if (label) cap.appendChild(label.cloneNode(true)).insertAdjacentText('afterend', ' ');
-    cap.appendChild(document.createTextNode(data.caption));
+    var given = fallback.querySelector('figcaption');
+    if (given) {
+      for (var c = 0; c < given.childNodes.length; c++) cap.appendChild(given.childNodes[c].cloneNode(true));
+    } else {
+      cap.appendChild(document.createTextNode(data.caption));
+    }
 
     /* ── state helpers ──────────────────────────────────────────── */
     function set() { return sets[st.cfg]; }

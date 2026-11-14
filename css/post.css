@@ -44,6 +44,13 @@
 }
 .post__header--lead { text-align: center; margin-bottom: 2rem; }
 .post__header--lead .post__title { margin-bottom: 0.9rem; }
+.post__dek {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--gray-600);
+  margin: 0 auto 1rem;
+}
+.post__header--lead .post__dek { text-align: center; }
 .post__date {
   font-size: 0.95rem;
   color: var(--gray-600);
@@ -463,6 +470,9 @@
 .post th[scope="row"], .post thead th.l, .post td.l { text-align: left; }
 .post th[scope="row"] { font-weight: 500; }
 .post td { text-align: right; }
+/* tables of words rather than numbers */
+.post table.t-text td, .post table.t-text thead th { text-align: left; white-space: normal; }
+.post table.t-text td { min-width: 9rem; }
 .post tbody tr:last-child th, .post tbody tr:last-child td { border-bottom: none; }
 .post tfoot th, .post tfoot td {
   border-top: 1px solid var(--border-strong);
