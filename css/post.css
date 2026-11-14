@@ -44,13 +44,6 @@
 }
 .post__header--lead { text-align: center; margin-bottom: 2rem; }
 .post__header--lead .post__title { margin-bottom: 0.9rem; }
-.post__dek {
-  font-size: 1.1rem;
-  line-height: 1.5;
-  color: var(--gray-600);
-  margin: 0 auto 1rem;
-}
-.post__header--lead .post__dek { text-align: center; }
 .post__date {
   font-size: 0.95rem;
   color: var(--gray-600);
