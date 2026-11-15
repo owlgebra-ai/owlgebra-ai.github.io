@@ -81,6 +81,16 @@
 }
 .post a:not(.btn):hover { text-decoration-color: var(--black); }
 .post__links a, .post__links a:hover { text-decoration: none; }
+.post__links .is-soon {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: #8a8a8a;  /* muted, still 3:1 on white */
+  cursor: default;
+  white-space: nowrap;
+}
 .post h2 {
   font-size: clamp(1.5rem, 2.6vw, 1.875rem);
   font-weight: 700;

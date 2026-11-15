@@ -55,7 +55,7 @@
 
     <nav class="post__links post__links--lead" aria-label="Post resources">
       <a href="https://github.com/owlgebra-ai/faiss/tree/main/contrib/o_means">Code</a>
-      <a href="o-means.pdf">Paper (PDF)</a>
+      <span class="is-soon" aria-disabled="true">Paper (coming soon)</span>
     </nav>
 
     <p>o-means is a GPU k-means algorithm for large <i>k</i>: millions of vectors clustered into tens of thousands of centroids, the job that builds an IVF index or a vector-quantisation codebook. o-means reaches the clustering error of <a href="https://arxiv.org/abs/2611.09501">e-means</a> in 22% of e-means’ time. It reaches the error of 25 Lloyd iterations more than 100 times sooner than Flash-KMeans or faiss GPU.</p>
@@ -290,14 +290,14 @@ distances, nearest = om.assign(x)    # exact search</code></pre>
 
 <pre><code>python benchs/o_means/bench_o_means.py --nepochs 1 2 3</code></pre>
 
-    <p>The <a href="https://owlgebra.ai/blog/o-means/o-means.pdf">paper</a> has the full method and the evaluation protocol.</p>
+    <p>The paper, with the full method and the evaluation protocol, is coming soon.</p>
 
     <div class="section-label" aria-hidden="true">07</div>
     <h2 id="references">References</h2>
 
     <ul class="list">
       <li><b>e-means:</b> paper, <a href="https://arxiv.org/abs/2611.09501">arXiv:2611.09501</a>; post, <a href="https://e-means.github.io/">e-means.github.io</a>; code, faiss <code>contrib/e_means</code>.</li>
-      <li><b>o-means:</b> code, <a href="https://github.com/owlgebra-ai/faiss/tree/main/contrib/o_means">faiss fork <code>contrib/o_means</code></a>; <a href="https://owlgebra.ai/blog/o-means/o-means.pdf">paper</a>.</li>
+      <li><b>o-means:</b> code, <a href="https://github.com/owlgebra-ai/faiss/tree/main/contrib/o_means">faiss fork <code>contrib/o_means</code></a>; paper coming soon.</li>
       <li><b>Flash-KMeans 0.3.1</b>, the GPU Lloyd reference.</li>
       <li><b>faiss</b>, whose GPU k-means is the second Lloyd baseline.</li>
       <li><b>Approximate k-means:</b> Philbin et al., “Object retrieval with large vocabularies and fast spatial matching”, CVPR 2007, <a href="https://doi.org/10.1109/CVPR.2007.383172">doi:10.1109/CVPR.2007.383172</a>.</li>
