@@ -1,0 +1,250 @@
+/* Ecom-RLVE post: rules this page needs on top of ../../css/post.css. */
+
+/* Summary at the head of the article */
+.post p.tldr {
+  border-left: 3px solid var(--accent);
+  background: var(--gray-50);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 1.5rem;
+}
+.post p.tldr b { font-weight: 600; }
+
+/* Tables whose cells hold sentences, not numbers: wrap and read left to right. */
+.table-block--text td,
+.table-block--text th[scope="row"] {
+  white-space: normal;
+  text-align: left;
+  vertical-align: top;
+}
+.table-block--text td { font-variant-numeric: normal; min-width: 15rem; }
+.table-block--text th[scope="row"] { font-weight: 600; min-width: 7.5rem; }
+.table-block--text thead th { min-width: 0; }
+#table-4 th[scope="row"] { white-space: nowrap; }
+#table-7 td { min-width: 11rem; }
+
+/* Difficulty tables: a sentence in the first column, numbers in the rest. */
+.table-block--axes th[scope="row"] { white-space: normal; min-width: 11rem; }
+.table-block--axes th[scope="row"] b { font-weight: 600; }
+.table-block--axes thead th code { font-size: 1em; background: none; padding: 0; }
+.table-block--axes thead th { white-space: nowrap; }
+
+/* The two trajectories side by side */
+.table-block--traj td { min-width: 17rem; line-height: 1.55; }
+.table-block--traj td + td { min-width: 24rem; }
+.table-block--traj th[scope="row"] { min-width: 0; white-space: nowrap; }
+.table-block--traj thead th { font-size: 0.8rem; }
+.table-block--traj thead th b { color: var(--black); }
+.table-block--traj tbody tr:nth-last-child(-n+2) th,
+.table-block--traj tbody tr:nth-last-child(-n+2) td { background: var(--gray-50); }
+.table-block--traj tbody tr:nth-last-child(2) th,
+.table-block--traj tbody tr:nth-last-child(2) td { border-top: 1px solid var(--border-strong); }
+
+/* C1 ⊂ C2 ⊂ C4 ⊂ C8 */
+.post p.nesting {
+  text-align: center;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Link to the live demo, and the resource links repeated in the body */
+.post p.demo-link { margin-top: 1.5rem; }
+.post p.demo-link a {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: var(--transition);
+}
+.post p.demo-link a:hover { background: var(--gray-50); border-color: var(--gray-400); }
+.post p.post__links--inline { margin-bottom: 1.5rem; }
+
+/* References */
+.post ol.refs-numbered li { margin-bottom: 0.6rem; }
+.post ol.refs-numbered a { overflow-wrap: anywhere; }
+
+/* Credit line at the foot of the article */
+.post-origin {
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+@media (max-width: 640px) {
+  .post p.tldr { padding: 0.9rem 1rem; }
+  .table-block--text td { min-width: 11rem; }
+  .table-block--text th[scope="row"] { min-width: 6.5rem; }
+  .table-block--traj td { min-width: 15rem; }
+  .table-block--traj td + td { min-width: 20rem; }
+}
+
+/* ── Cover artwork: a swarm of agents (cover.js takes over the static frame) ── */
+.post-cover.is-live svg.cover-svg { cursor: crosshair; touch-action: manipulation; }
+.sw-a { fill: #8a8a8a; transition: fill 0.6s; }
+.sw-a.is-ink { fill: var(--black); }
+.sw-ring { fill: none; stroke: var(--gray-600); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.sw-task.is-called .sw-ring { stroke: var(--black); stroke-width: 1.25; }
+.sw-notch { fill: none; stroke: var(--gray-400); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.sw-notch--on { stroke: var(--black); }
+.sw-disc { fill: var(--black); }
+.sw-tick { fill: none; stroke: var(--white); stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.sw-caret { fill: none; stroke: var(--black); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+@media (prefers-reduced-motion: reduce) {
+  .sw-a { transition: none; }
+}
+
+/* ── Created figures: shared text sizes. Narrow drawings (.er-sm) are scaled down on phones,
+      so their text is set larger to stay at 10px or more on screen. ── */
+.er-node { font-size: 12.5px; font-weight: 600; }
+.er-sub { font-size: 10.5px; fill: var(--gray-600) !important; }
+.fig svg text.er-node--inv { fill: var(--white); }
+.fig svg text.er-sub--inv { fill: var(--gray-200) !important; }
+.er-elabel { font-size: 11px; fill: var(--gray-600) !important; }
+.er-frame-label { font-size: 10.5px; font-weight: 500; fill: var(--gray-600) !important; letter-spacing: 0.01em; }
+.er-dlabel { font-size: 12.5px; font-weight: 600; font-style: italic; }
+.er-rname {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  font-size: 11px;
+  fill: var(--gray-600) !important;
+}
+.fig svg text.er-rname--total { font-weight: 600; fill: var(--black) !important; }
+.fig svg.er-sm .er-node { font-size: 13.5px; }
+.fig svg.er-sm .er-sub,
+.fig svg.er-sm .er-elabel,
+.fig svg.er-sm .er-frame-label,
+.fig svg.er-sm .p-sub,
+.fig svg.er-sm .v-num { font-size: 12px; }
+.fig svg.er-sm .er-dlabel,
+.fig svg.er-sm .g-label { font-size: 13.5px; }
+.fig svg.er-sm .row-label,
+.fig svg.er-sm .ax-tick,
+.fig svg.er-sm .ax-title,
+.fig svg.er-sm .v-label,
+.fig svg.er-sm .er-rname { font-size: 12.5px; }
+
+/* Figure 3: the training loop */
+.er-frame { fill: var(--gray-50); stroke: var(--border-strong); stroke-width: 1; }
+.er-box { fill: var(--white); stroke: var(--gray-400); stroke-width: 1; }
+.er-box--goal { stroke: var(--gray-600); stroke-dasharray: 4 3; }
+.er-box--agent { fill: var(--black); stroke: var(--black); }
+.er-box--ver { fill: var(--gray-50); stroke: var(--black); stroke-width: 1.5; }
+.er-edge { fill: none; stroke: var(--black); stroke-width: 1.25; stroke-linejoin: round; }
+.er-edge--dash { stroke-dasharray: 4 3; }
+.er-head { fill: var(--black); }
+
+/* Figure 4: the two trajectories */
+.er-base { stroke: var(--gray-400); stroke-width: 1; }
+.er-m-look { fill: var(--white); stroke: var(--gray-600); stroke-width: 1.5; }
+.er-m-cart, .er-m-done { fill: var(--black); }
+.er-m-talk { stroke: var(--gray-600); stroke-width: 3; }
+.er-c-empty { stroke: var(--gray-200); stroke-width: 1.5; }
+.er-c-ok { fill: var(--black); }
+.er-c-bad { fill: var(--white); stroke: var(--black); stroke-width: 1.5; }
+.er-c-slash { stroke: var(--black); stroke-width: 1.5; }
+.er-zero-tick { fill: var(--gray-400); }
+.er-rewards-n { margin-top: 1.5rem; }
+
+/* Figure 5: accuracy and difficulty range against training steps */
+.er-band { fill: var(--gray-100); }
+.er-up { fill: none; stroke: var(--black); stroke-width: 2; }
+.er-low { fill: none; stroke: var(--gray-600); stroke-width: 1; }
+.er-promo { stroke: var(--gray-400); stroke-width: 1; stroke-dasharray: 3 3; }
+.er-diamond { fill: var(--black); }
+
+.er-runbg { fill: var(--gray-50); }
+.er-frame-ax { fill: none; stroke: var(--gray-400); stroke-width: 1; }
+.er-tau { stroke: var(--gray-400); stroke-width: 1; stroke-dasharray: 2 3; }
+.er-tau-label { font-size: 10.5px; fill: var(--gray-600) !important; }
+.er-dots circle { fill: var(--gray-100); stroke: var(--gray-400); stroke-width: 0.75; }
+.er-acc { fill: none; stroke: var(--black); stroke-width: 1.75; stroke-linejoin: round; }
+.er-pdiamond { fill: var(--black); stroke: var(--white); stroke-width: 1.25; }
+.er-runname { font-size: 10.5px; font-weight: 600; fill: var(--gray-600) !important; }
+.er-bandlabel { font-size: 10.5px; font-weight: 600; }
+.fig svg.er-sm .er-tau-label,
+.fig svg.er-sm .er-runname,
+.fig svg.er-sm .er-bandlabel { font-size: 12px; }
+
+/* Figure 1: the sample episode as a conversation */
+.er-chat {
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem 1.25rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.post .er-chat p { margin: 0; }
+.post .er-chat code { background: none; padding: 0; border-radius: 0; font-size: 0.86em; }
+.post .er-chat__head {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-weight: 600;
+  padding-bottom: 0.7rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.er-chat__d { font-family: var(--font-mono), ui-monospace, Menlo, monospace; font-weight: 500; font-size: 0.86em; color: var(--gray-600); }
+.post ol.er-chat__turns { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.95rem; }
+.post .er-chat__turns > li { padding: 0; margin: 0; display: flex; flex-direction: column; }
+.er-turn--user { align-items: flex-end; }
+.er-turn--agent { align-items: flex-start; }
+.post .er-bubble { max-width: 85%; background: var(--gray-100); border-radius: 14px 14px 4px 14px; padding: 0.55rem 0.85rem; }
+.er-msg { max-width: 94%; min-width: 0; border-left: 2px solid var(--black); padding-left: 0.8rem; }
+.post .er-msg__text { margin-bottom: 0.4rem; }
+.er-calls {
+  background: var(--gray-50);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.65rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.er-calls code { white-space: pre; color: var(--gray-600); }
+.post ul.er-calls__list { list-style: none; padding: 0; margin: 0; }
+.post ul.er-calls__list li { padding: 0; margin: 0; }
+.post ul.er-calls__list code { color: var(--black); }
+.post .er-turn__n { font-size: 0.72rem; color: var(--gray-600); margin-top: 0.3rem; letter-spacing: 0.02em; }
+.er-verifier { margin-top: 1.15rem; padding-top: 0.8rem; border-top: 1px solid var(--border-strong); }
+.post .er-verifier__head { font-weight: 600; margin-bottom: 0.45rem; }
+.er-verifier__grid { margin: 0; display: grid; gap: 0.15rem; }
+.er-verifier__grid > div { display: grid; grid-template-columns: 9.5rem 1fr; }
+.er-verifier__grid dd { margin: 0; padding-left: 0.75rem; border-left: 1px solid var(--border-strong); }
+.er-ok { font-weight: 700; }
+.post .er-verifier__total { margin-top: 0.55rem; padding-top: 0.45rem; border-top: 1px solid var(--border); font-weight: 600; }
+.post .er-verifier__sum { margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid var(--border); overflow-x: auto; white-space: nowrap; }
+@media (max-width: 600px) {
+  .er-chat { padding: 0.9rem 0.8rem 1rem; }
+  .post .er-bubble, .er-msg { max-width: 100%; }
+  .er-msg { width: 100%; }
+  .er-verifier__grid > div { grid-template-columns: 7.75rem 1fr; }
+}
+
+/* Figure 2: the twelve axes around the difficulty dial */
+.er-pill { fill: var(--white); stroke: var(--gray-400); stroke-width: 1; }
+.er-axes g:hover > .er-pill { stroke: var(--black); }
+.er-pill__n { fill: var(--black); }
+.fig svg text.er-pill__num { font-size: 12px; font-weight: 600; fill: var(--white); font-variant-numeric: tabular-nums; }
+.er-pill__name { font-size: 13px; font-weight: 500; }
+.er-axis-link { fill: none; stroke: var(--gray-400); stroke-width: 1; }
+.er-dial__rim { fill: var(--gray-50); stroke: var(--black); stroke-width: 1.25; }
+.er-dial__face { fill: var(--white); stroke: var(--border-strong); stroke-width: 1; }
+.er-dial__ticks { stroke: var(--gray-600); stroke-width: 1; }
+.er-dial__needle { stroke: var(--black); stroke-width: 2; stroke-linecap: round; }
+.er-dial__hub { fill: var(--black); }
+.er-dial__t { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; }
+.er-dial__s { font-size: 12px; fill: var(--gray-600) !important; }
+.fig svg.er-sm .er-pill__name { font-size: 13.5px; }
+.fig svg.er-sm text.er-pill__num { font-size: 12.5px; }
+.er-calls:focus-visible, .post .er-verifier__sum:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; }

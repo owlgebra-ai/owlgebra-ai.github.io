@@ -463,6 +463,9 @@
 .post th[scope="row"], .post thead th.l, .post td.l { text-align: left; }
 .post th[scope="row"] { font-weight: 500; }
 .post td { text-align: right; }
+/* tables of words rather than numbers */
+.post table.t-text td, .post table.t-text thead th { text-align: left; white-space: normal; }
+.post table.t-text td { min-width: 9rem; }
 .post tbody tr:last-child th, .post tbody tr:last-child td { border-bottom: none; }
 .post tfoot th, .post tfoot td {
   border-top: 1px solid var(--border-strong);

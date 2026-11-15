@@ -1,0 +1,69 @@
+/* RexBERT post: rules this page needs on top of ../../css/post.css. */
+
+/* Images copied from the original article */
+.fig img { display: block; width: 100%; height: auto; }
+
+/* The article's figures are detailed images. Each keeps a readable minimum width
+   (set per figure as --fig-min) and scrolls sideways inside its own frame when the
+   screen is narrower than that. */
+.fig-scroll__wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.fig-scroll__wrap:focus-visible { outline: 2px solid var(--black); outline-offset: 2px; }
+.fig-scroll__wrap img { min-width: var(--fig-min, 0); }
+
+/* Lead-ins inside the training phases */
+.post h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 1.5rem auto 0.5rem;
+}
+
+/* The one-sentence result quoted in the evaluation */
+.post blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 0.15rem 0 0.15rem 1.25rem;
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+.post blockquote p { margin: 0; }
+
+/* Credit line at the foot of the article */
+.post-origin {
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+/* ── Cover artwork: a barcode of tokens, masked spans, arcs (cover.js takes it over) ── */
+.rx-bar { fill: var(--gray-400); fill-opacity: 0.5; transition: fill 0.18s, fill-opacity 0.18s; }
+.rx-bar.is-ctx { fill: var(--black); }
+.rx-bar.is-focus { fill: var(--black); fill-opacity: 1; }
+.rx-mask { fill: none; stroke: var(--gray-400); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.rx-mask.is-focus { stroke: var(--black); }
+.rx-level { fill: var(--black); fill-opacity: 0.85; }
+.rx-arc {
+  fill: none; stroke: var(--black); stroke-width: 0.75px; stroke-opacity: 0.25;
+  vector-effect: non-scaling-stroke; transition: stroke-opacity 0.18s;
+}
+.rx-mark { fill: none; stroke: var(--black); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.rx-window { fill: none; stroke: var(--gray-400); stroke-width: 1; vector-effect: non-scaling-stroke; }
+@media (prefers-reduced-motion: reduce) {
+  .rx-bar, .rx-arc { transition: none; }
+}
+
+/* ── Created figures (2, 3, 6) ── */
+.rb-fig .rb-in { font-size: 11.5px; font-weight: 400; }
+.rb-fig .rb-in-b { font-weight: 600; }
+.rb-fig text.rb-in--inv { fill: var(--white); }
+.rb-tick { stroke: var(--black); stroke-width: 1; }
+.rb-f2 { max-width: var(--text-w); }
+/* the narrow drawings are shown at about 0.95 scale on a phone: keep small text at 10px or more */
+.rb-fig .fig-narrow .v-num,
+.rb-fig .fig-narrow .v-sub,
+.rb-fig .fig-narrow .v-label { font-size: 11px; }
